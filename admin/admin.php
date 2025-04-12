@@ -1,3 +1,7 @@
+    <?php
+    include 'announce.php';
+    include '../connection/connect.php';
+    ?>
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -36,25 +40,27 @@
                 <div class="announce-header">
                 <h3>Give an announcement</h3>
                 </div>
+                <form action="annunce.php" method="POST" enctype="multipart/form-data">
                 <div class="announce-all">
                     <div class="announce-content">
                       <p>Write to your students what you want to share today *</p>
-                      <textarea rows="6" placeholder="Write your announcement here..."></textarea>
+                      <textarea rows="6" placeholder="Write your announcement here..." name="announcement"></textarea>
                     </div>
                   
                     <div class="announce-file">
                       <p>Upload a file</p>
-                      <input type="file" id="fileInput">
+                      <input type="file" id="fileInput" name ="announce_file">
                       <div class="file-preview" id="filePreview">No file uploaded yet.</div>
                     </div>
                     <div class="by">
                         <p>Announcement by:</p>
                         <div class="by-name">
-                            <input type="text" placeholder="Enter your name" style="width: 100%; padding: 10px; border-radius: 5px; background-color: #2c2c2c; color: white; border: 1px solid #444;">
+                            <input type="text" placeholder="Enter your name" name="announcer_name" style="width: 100%; padding: 10px; border-radius: 5px; background-color: #2c2c2c; color: white; border: 1px solid #444;">
                     </div>
                   </div>
                   <button  class="announce-btn" type="submit">Announce</button>
                 </div>
+          </form>
             </div>
             <script>
                 /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
