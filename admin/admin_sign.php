@@ -1,32 +1,83 @@
 <?php
-session_start();
+session_start(); 
+
 include '../connection/connect.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $email = trim($_POST['email']);
-    $password = trim($_POST['password']);
-    $role = trim($_POST['role']);
+if (!isset($_SESSION['email'])) {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['email'])) {
+        $email = trim($_POST['email']);
+        
+        $stmt = $pdo->prepare("SELECT * FROM authors WHERE email_address = ?");
+        $stmt->execute([$email]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        if ($user) {
+            $_SESSION['email'] = $email; 
+        } else {
+            echo "<p style='color:red;'>Email not found!</p>";
+        }
+    }
 }
 
 
+if (isset($_SESSION['email']) && !isset($_SESSION['secret_code_verified'])) {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['secret_code'])) {
+        $secret_code_input = trim($_POST['secret_code']);
+
+        $stmt = $pdo->prepare("SELECT * FROM authors WHERE email_address = ?");
+        $stmt->execute([$_SESSION['email']]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user && $user['secret_code'] === $secret_code_input) {
+            $_SESSION['secret_code_verified'] = true; 
+        } else {
+            echo "<p style='color:red;'>Incorrect Secret Code!</p>";
+        }
+    }
+}
+
+
+if (isset($_SESSION['secret_code_verified']) && $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['new_password'])) {
+    $new_password = password_hash(trim($_POST['new_password']), PASSWORD_DEFAULT);
+
+    $stmt = $pdo->prepare("UPDATE authors SET password = ? WHERE email_address = ?");
+    $stmt->execute([$new_password, $_SESSION['email']]);
+
+    session_destroy();
+    header("Location: admin_login.php"); 
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Admin Setup</title>
 </head>
 <body>
-    <form action="" method="POST">
-        <input type="email" name="email" id="email" placeholder="Enter your email.."><br>
-        <input type="password" name="password" id="password" placeholder="Enter your password.."><br>
-        <button type="submit">Login</button>
-    </form>
-    <?php
-  
-    ?>
+    <h1>Admin Setup</h1>
+
+    <?php if (!isset($_SESSION['email'])): ?>
+        <form method="POST">
+            <input type="email" name="email" placeholder="Enter your email..." required>
+            <button type="submit">Continue</button>
+        </form>
+
+    <?php elseif (!isset($_SESSION['secret_code_verified'])): ?>
+        <form method="POST">
+            <input type="text" name="secret_code" placeholder="Enter your secret code..." required>
+            <button type="submit">Continue</button>
+        </form>
+
+    <?php elseif (isset($_SESSION['secret_code_verified'])): ?>
+        <form method="POST">
+            <input type="password" name="new_password" placeholder="Set your new password..." required>
+            <button type="submit">Set Password</button>
+        </form>
+
+    <?php endif; ?>
+
 </body>
 </html>
