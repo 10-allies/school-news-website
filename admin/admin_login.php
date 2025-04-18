@@ -2,6 +2,8 @@
 session_start();
 include '../connection/connect.php';
 
+$message = '';
+$message_type = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = trim($_POST['email']);
@@ -17,14 +19,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['email'] = $user['email_address'];
             $_SESSION['role'] = $user['role'];
 
-            echo "<p style='color:green;'>Login successful! Redirecting...</p>";
+           $message = 'Login successful! Redirecting...';
+           $message_type = 'success';
             header("refresh:2; url=admin.php"); 
             exit;
         } else {
-            echo "<p style='color:red;'>Incorrect password!</p>";
+           $message = 'Incorrect password!';
+            $message_type = 'error';
         }
     } else {
-        echo "<p style='color:red;'>Email not found!</p>";
+        $message = 'Email not found!';
+        $message_type = 'error';
     }
 }
 ?>
@@ -35,19 +40,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login</title>
-    <link rel="stylesheet" href="admin_login.css">
+    <link rel="stylesheet" href="admin_login.css?v=1.0">
 </head>
 <body>
     
     <div class="login-form">
-    <?php if (!empty($message)): ?>
-                <div class="message <?= $message_type; ?>">
-                    <?= htmlspecialchars($message); ?>
-                </div>
-            <?php endif; ?>
-
     <fieldset>
     <h2 style="text-align: center; margin-top: 0.2em;">Admin Login</h2>
+    <?php if (!empty($message)): ?>
+            <div class="<?= htmlspecialchars($message_type); ?>">
+                <?= htmlspecialchars($message); ?>
+            </div>
+        <?php endif; ?>
     <form action="" method="POST">
         <input type="email" name="email" placeholder="Enter your email..." required><br>
         <input type="password" name="password" placeholder="Enter your password..." required><br>

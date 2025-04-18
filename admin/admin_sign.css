@@ -1,4 +1,84 @@
 *{
     padding: 0;
     margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #47f026, #ffffff);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+
+.email_part, .secret_code, .pass {
+    background: #fff;
+    padding: 30px 25px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+    width: 300px;
+    text-align: center;
+    animation: fadeIn 0.8s ease;
+}
+
+form input {
+    width: 100%;
+    padding: 12px 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: 0.3s;
+}
+
+form input:focus {
+    border-color: #74ebd5;
+    outline: none;
+    background-color: #f0faff;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #5ee93b;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: #57c6c1;
+}
+
+p {
+    margin-bottom: 15px;
+    color: red;
+    font-weight: bold;
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
