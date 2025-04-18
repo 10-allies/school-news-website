@@ -60,14 +60,13 @@ a {
 
 /* SIDE CSS */
 .sideArea {
-    width: 18%;
-    min-width: 350px;
+    display: flex;
+    flex-direction: column;
     background-color: rgb(2, 88, 2);
+    padding: 20px;
+    min-height: 100vh; /* always at least screen height */
+    height: auto; /* allow it to grow */
     position: relative;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    transition: 0.5s;
 }
 .container.is-click .sideArea {
     left: -200px;
@@ -234,7 +233,7 @@ margin-top: 10px;
 border-radius: 5px;
 }
 .announce-btn {
-    background-color: #066806; /* Bright green */
+    background-color: #066806;
     color: white;
     font-size: 1.2em;
     font-family: 'Tilt Prism', sans-serif;
@@ -247,13 +246,49 @@ border-radius: 5px;
 }
 
 .announce-btn:hover {
-    background-color: #0bb00b; /* Darker green */
+    background-color: #0bb00b; 
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
     transform: translateY(-2px);
 }
 
 .announce-btn:active {
-    background-color: #088808; /* Even darker green */
+    background-color: #088808; 
     transform: translateY(0);
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+.modal {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-content {
+    background: white;
+    padding: 2em;
+    border-radius: 1em;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    text-align: center;
+}
+
+.modal-content input[type="text"] {
+    width: 80%;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.modal-content button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #25df44;
+    border: none;
+    color: white;
+    font-size: 1.1em;
+    border-radius: 5px;
+    cursor: pointer;
 }
