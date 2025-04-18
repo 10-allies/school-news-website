@@ -55,28 +55,32 @@ if (isset($_SESSION['secret_code_verified']) && $_SERVER['REQUEST_METHOD'] == 'P
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Setup</title>
+    <link rel="stylesheet" href="admin_sign.css">
 </head>
 <body>
     <h1>Admin Setup</h1>
 
     <?php if (!isset($_SESSION['email'])): ?>
+        <div class="email_part">
         <form method="POST">
             <input type="email" name="email" placeholder="Enter your email..." required>
             <button type="submit">Continue</button>
         </form>
-
+    </div>
     <?php elseif (!isset($_SESSION['secret_code_verified'])): ?>
+        <div class="secret_code">
         <form method="POST">
             <input type="text" name="secret_code" placeholder="Enter your secret code..." required>
             <button type="submit">Continue</button>
         </form>
-
+    </div>
     <?php elseif (isset($_SESSION['secret_code_verified'])): ?>
+        <div class="pass">
         <form method="POST">
             <input type="password" name="new_password" placeholder="Set your new password..." required>
             <button type="submit">Set Password</button>
         </form>
-
+    </div>
     <?php endif; ?>
 
 </body>
