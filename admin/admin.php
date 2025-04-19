@@ -45,7 +45,7 @@ if (isset($_POST['set_nickname']) && !empty($_POST['nickname'])) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://fonts.cdnfonts.com/css/tilt-prism" rel="stylesheet">
         <link href="https://fonts.cdnfonts.com/css/equine" rel="stylesheet">
-        <link rel="stylesheet" href="admin.css?v=2.0">
+        <link rel="stylesheet" href="admin.css?v=8.0">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <title>Admin panel</title>
     </head>
@@ -72,18 +72,24 @@ if (isset($_POST['set_nickname']) && !empty($_POST['nickname'])) {
                 </div>
                 <ul class="sideMenu">
                     <h2>Uplaod</h2>
-                    <li><a href="">Local news</a></li>
-                    <button class="dropdown-btn">Sports 
+                    <li><a href=""><i class="fa fa-newspaper-o"></i> Local news</a></li>
+                    <button class="dropdown-btn"><i class="fa fa-futbol-o"></i> Sports 
                         <i class="fa fa-caret-down"></i>
                     </button>
                     <div class="dropdown-container">
-                        <a href="#">Football</a>
-                        <a href="#">Basketball</a>
-                        <a href="#">Volleyball</a>
-                        <a href="#">Hope premier league</a>
+                        <a href="#"><i class="fa fa-soccer-ball-o"></i> Football</a>
+                        <a href="#"><i class="fa fa-dribbble"></i>  Basketball</a>
+                        <a href="#"><i class="fa fa-trophy"></i> Volleyball</a>
+                        <a href="#"><i class="fa fa-trophy"></i> Hope premier league</a>
                     </div>
-                    <li><a href="#">entertainment</a></li>
-                    <li><a href="#" onclick="showContent('content1')">Announcement</a></li>
+                    <li><a href="#"><i class="fa fa-film"></i> entertainment</a></li>
+                    <li><a href="#" onclick="showContent('content1')"><i class="fa fa-bullhorn"></i> Announcement</a></li>
+                    <button class="settings-dropdown"><i class="fa fa-cog"></i> Settings</button>
+                    <div class="settings-dropdown-content">
+                        <a href="#" onclick="loadProfileContent()"><i class="fa fa-user-circle"></i> Profile</a>
+                        <a href="admin_logout.php"><i class="fa fa-sign-out"></i> Logout</a>
+                    </div>
+
                 </ul>
             </div>
             <div id="content1" class="main-content">
@@ -129,6 +135,19 @@ if (isset($_POST['set_nickname']) && !empty($_POST['nickname'])) {
                 });
                 }
                 </script>
+                <script>
+    var settingsDropdown = document.querySelector(".settings-dropdown");
+    settingsDropdown.addEventListener("click", function() {
+        this.classList.toggle("active");
+        var dropdownContent = this.nextElementSibling;
+        if (dropdownContent.style.display === "block") {
+            dropdownContent.style.display = "none";
+        } else {
+            dropdownContent.style.display = "block";
+        }
+    });
+</script>
+
                 <script>
                     function showContent(contentId) {
             

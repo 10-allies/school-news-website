@@ -64,8 +64,8 @@ a {
     flex-direction: column;
     background-color: rgb(2, 88, 2);
     padding: 20px;
-    min-height: 100vh; /* always at least screen height */
-    height: auto; /* allow it to grow */
+    min-height: 100vh;
+    height: auto; 
     position: relative;
 }
 .container.is-click .sideArea {
@@ -101,7 +101,37 @@ background-color: #1a1a1a;
 .sideMenu {
     border-top: 1px solid rgba(255,255,255,0.2);
 }
-
+/* ICONS STYLING - */
+.sideArea i.fa {
+    font-size: 1.5em;
+    color: #9fb908; 
+    text-shadow: 0 0 5px rgba(13, 218, 13, 0.5), 0 0 10px rgba(0, 0, 0, 0.7);
+    margin-right: 12px;
+    transition: all 0.3s ease;
+}
+.dropdown-container a i.fa,
+.settings-dropdown-content a i.fa {
+    font-size: 1.3em;
+    color: #0dda0d;
+    text-shadow: 0 0 4px rgba(13, 218, 13, 0.5), 0 0 8px rgba(0, 0, 0, 0.7);
+    margin-right: 10px;
+}
+.sideArea li>a:hover i.fa,
+.dropdown-btn:hover i.fa,
+.settings-dropdown:hover i.fa,
+.dropdown-container a:hover i.fa,
+.settings-dropdown-content a:hover i.fa {
+    color: #80d1ab;
+    text-shadow: 0 0 6px rgba(152, 206, 150, 0.6), 0 0 12px rgba(0, 0, 0, 0.7);
+    transform: scale(1.05);
+}
+.fa-caret-down {
+    transition: transform 0.3s ease;
+}
+.dropdown-btn.active .fa-caret-down,
+.settings-dropdown.active .fa-caret-down {
+    transform: rotate(180deg);
+}
 /*Dropdown*/
 .dropdown-container {
 display: none;
@@ -291,4 +321,36 @@ border-radius: 5px;
     font-size: 1.1em;
     border-radius: 5px;
     cursor: pointer;
+}
+.settings-dropdown{
+    padding: 28px 13px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #aaaca8;
+    display: block;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    outline: none;  
+    border-top: 1px solid rgba(255,255,255,0.2);
+}
+.settings-dropdown-content{
+ display: none;
+}
+.settings-dropdown-content a{
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 1.3em;
+    color: #0dda0d;
+    font-family: sans-serif;
+    margin: 10px;
+    display: block;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    outline: none;   
 }
