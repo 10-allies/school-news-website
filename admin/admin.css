@@ -354,3 +354,81 @@ border-radius: 5px;
     cursor: pointer;
     outline: none;   
 }
+/* Profile Settings Section */
+#profileContent {
+    padding: 30px;
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+    color: #f1f1f1;
+}
+
+.profile-header h3 {
+    font-size: 28px;
+    margin-bottom: 25px;
+    font-family: 'Equine', sans-serif;
+    color: yellow;
+    text-align: center;
+    border-bottom: 2px solid yellow;
+    padding-bottom: 10px;
+}
+
+.profile-form-group {
+    margin-bottom: 20px;
+}
+
+.profile-form-group label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #ccc;
+    font-weight: bold;
+}
+
+.profile-form-group input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background-color: #2c2c2c;
+    color: #fff;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.profile-form-group input:focus {
+    border-color: yellow;
+    outline: none;
+}
+
+.profile-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, yellow, gold);
+    color: #1e1e1e;
+    font-weight: bold;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 15px;
+}
+
+.profile-btn:hover {
+    background: linear-gradient(135deg, gold, orange);
+}
+
+.profile-btn:active {
+    transform: scale(0.98);
+}
+
+@media (max-width: 600px) {
+    #profileContent {
+        padding: 20px;
+    }
+
+    .profile-header h3 {
+        font-size: 24px;
+    }
+}

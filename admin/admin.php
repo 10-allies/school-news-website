@@ -45,7 +45,7 @@ if (isset($_POST['set_nickname']) && !empty($_POST['nickname'])) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://fonts.cdnfonts.com/css/tilt-prism" rel="stylesheet">
         <link href="https://fonts.cdnfonts.com/css/equine" rel="stylesheet">
-        <link rel="stylesheet" href="admin.css?v=8.0">
+        <link rel="stylesheet" href="admin.css?v=9.0">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <title>Admin panel</title>
     </head>
@@ -118,6 +118,60 @@ if (isset($_POST['set_nickname']) && !empty($_POST['nickname'])) {
                 </div>
           </form>
             </div>
+            <div id="profileContent" class="main-content" style="display:none;">
+    <div class="profile-header">
+        <h3>Profile Settings</h3>
+    </div>
+    <form id="profileForm" method="POST" action="profile.php">
+    <div class="profile-form-group">
+            <label>Full name:</label>
+            <div style="display: flex; align-items: center;">
+                <input type="text" name="full_name" id="full_name" value="<?php echo htmlspecialchars($authorName); ?>" readonly>
+                <button type="button" class="edit-btn" onclick="enableEditing('full_name')">Edit</button>
+            </div>
+        </div>    
+    <div class="profile-form-group">
+            <label>Nickname:</label>
+            <div style="display: flex; align-items: center;">
+                <input type="text" name="nickname" id="nickname" value="<?php echo htmlspecialchars($nickname); ?>" readonly>
+                <button type="button" class="edit-btn" onclick="enableEditing('nickname')">Edit</button>
+            </div>
+        </div>
+
+        <div class="profile-form-group">
+            <label>New Password:</label>
+            <input type="password" name="new_password" id="new_password" placeholder="Enter new password...">
+        </div>
+
+        <div class="profile-form-group">
+            <label>Secret Code:</label>
+            <input type="text" name="secret_code" id="secret_code" value="<?php echo htmlspecialchars($secret_code); ?>" readonly>
+            <small style="color: orange;">Contact Super Admin to change your Secret Code.</small>
+        </div>
+
+        <button type="submit" class="profile-btn">Save Changes</button>
+    </form>
+</div>
+
+            <script>
+function loadProfileContent() {
+    var contents = document.querySelectorAll('.main-content');
+    contents.forEach(function(content) {
+        content.style.display = 'none';
+    });
+
+    var profileSection = document.getElementById('profileContent');
+    profileSection.style.display = 'block';
+}
+</script>
+<script>
+function enableEditing(fieldId) {
+    document.getElementById(fieldId).removeAttribute('readonly');
+    document.getElementById(fieldId).focus();
+}
+</script>
+
+
             <script>
                 /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
                 var dropdown = document.getElementsByClassName("dropdown-btn");
@@ -147,6 +201,7 @@ if (isset($_POST['set_nickname']) && !empty($_POST['nickname'])) {
         }
     });
 </script>
+
 
                 <script>
                     function showContent(contentId) {
