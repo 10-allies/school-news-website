@@ -468,3 +468,64 @@ font-size: 1.2em;
         font-size: 10px;
     }
 }
+.welcome-card {
+    position: relative;
+    text-align: center;
+    padding: 3em;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 1s ease-in-out;
+    z-index: 1;
+}
+
+.welcome-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../images/Blue folder with information about employee 3D illustration.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(10%) blur(5px); /* Makes it almost black */
+    z-index: 0;
+}
+
+.welcome-card * {
+    position: relative;
+    z-index: 2;
+    color: white;
+}
+
+.welcome-card h1 {
+    font-family: 'Tilt Prism', sans-serif;
+    font-size: 2.8em;
+    color: #76946a;
+    margin-bottom: 0.5em;
+}
+
+.welcome-card p {
+    font-size: 1.5em;
+    color: #c5d1bf;
+    font-family: 'Equine', sans-serif;
+    margin-bottom: 1em;
+}
+.welcome-image {
+    margin-top: 1em;
+    width: 40%;
+    max-width: 400px;
+    border-radius: 15px;
+    filter: brightness(0) invert(1);
+}
+
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px);}
+    to { opacity: 1; transform: translateY(0);}
+}

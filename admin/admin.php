@@ -100,6 +100,14 @@ $authorName = $author['author_name'] ?? '';
 
                 </ul>
     </div>
+    <div id="welcomeContent" class="main-content">
+    <div class="welcome-card">
+        <h1>👋 Welcome, <?php echo htmlspecialchars($nickname); ?>!</h1>
+        <p>We're happy to have you managing your content today.<br>Select a section from the left to get started.</p>
+            <img src="../images/reporter.png" alt="Welcome Image" class="welcome-image">
+    </div>
+</div>
+
             <div id="content1" class="main-content">
                 
                 <div class="announce-header">
