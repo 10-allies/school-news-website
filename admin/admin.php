@@ -2,6 +2,12 @@
 session_start();
 include '../connection/connect.php';
 
+
+//avoiding user coming back
+header("Cache-Control: no-cache, no-store, must-revalidate"); 
+header("Pragma: no-cache"); 
+header("Expires: 0"); 
+
 if (!isset($_SESSION['user_id'])) {
     header('Location: admin_login.php');
     exit;
@@ -12,7 +18,7 @@ $nickname = 'Media club';
 
 if ($_SESSION['role'] == 'author') {
     
-    $stmt = $pdo->prepare("SELECT author_display_name FROM authors WHERE author_id = ?");
+    $stmt = $pdo->prepare("SELECT author_name, author_display_name FROM authors WHERE author_id = ?");
     $stmt->execute([$_SESSION['user_id']]);
     $author = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -36,6 +42,8 @@ if (isset($_POST['set_nickname']) && !empty($_POST['nickname'])) {
     header("Location: admin.php");
     exit();
 }
+
+$authorName = $author['author_name'] ?? '';
 ?>
 
     <!DOCTYPE html>
@@ -45,7 +53,7 @@ if (isset($_POST['set_nickname']) && !empty($_POST['nickname'])) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://fonts.cdnfonts.com/css/tilt-prism" rel="stylesheet">
         <link href="https://fonts.cdnfonts.com/css/equine" rel="stylesheet">
-        <link rel="stylesheet" href="admin.css?v=9.0">
+        <link rel="stylesheet" href="admin.css?v=10.0">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <title>Admin panel</title>
     </head>
@@ -67,7 +75,7 @@ if (isset($_POST['set_nickname']) && !empty($_POST['nickname'])) {
             <div class="sideArea">
             <div class="avatar">
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCNOdyoIXDDBztO_GC8MFLmG_p6lZ2lTDh1ZnxSDawl1TZY_Zw" alt="">
-                    <div class="avatarName">Welcome, <br><span style="color: yellow;"><?php echo htmlspecialchars($nickname); ?></span> </div>
+                    <div class="avatarName">Welcome, <br><span style="color: yellow; font-family: sans-serif;"><?php echo htmlspecialchars($nickname); ?></span> </div>
 
                 </div>
                 <ul class="sideMenu">
@@ -87,12 +95,13 @@ if (isset($_POST['set_nickname']) && !empty($_POST['nickname'])) {
                     <button class="settings-dropdown"><i class="fa fa-cog"></i> Settings</button>
                     <div class="settings-dropdown-content">
                         <a href="#" onclick="loadProfileContent()"><i class="fa fa-user-circle"></i> Profile</a>
-                        <a href="admin_logout.php"><i class="fa fa-sign-out"></i> Logout</a>
+                        <a href="logout.php"><i class="fa fa-sign-out"></i> Logout</a>
                     </div>
 
                 </ul>
-            </div>
+    </div>
             <div id="content1" class="main-content">
+                
                 <div class="announce-header">
                 <h3>Give an announcement</h3>
                 </div>
@@ -123,10 +132,18 @@ if (isset($_POST['set_nickname']) && !empty($_POST['nickname'])) {
         <h3>Profile Settings</h3>
     </div>
     <form id="profileForm" method="POST" action="profile.php">
+    <p id="danger" style="display: flex; align-items: center; font-size: 1em; background-color: #ffe6e6; padding: 10px; border: 1px solid #ffcccc; border-radius: 5px;">
+    <i class="fa fa-warning" style="font-size: 1.5em; color: #ff0000; margin-right: 10px;"></i>
+    <span>
+        Remember that changing your profile and modifying anything is done 
+        <strong style="color: red; font-size: 1.2em;">once in 31 days</strong>.
+    </span>
+</p>
     <div class="profile-form-group">
             <label>Full name:</label>
             <div style="display: flex; align-items: center;">
-                <input type="text" name="full_name" id="full_name" value="<?php echo htmlspecialchars($authorName); ?>" readonly>
+            <input type="text" name="full_name" id="full_name" value="<?php echo htmlspecialchars($authorName); ?>" readonly>
+
                 <button type="button" class="edit-btn" onclick="enableEditing('full_name')">Edit</button>
             </div>
         </div>    
@@ -145,14 +162,22 @@ if (isset($_POST['set_nickname']) && !empty($_POST['nickname'])) {
 
         <div class="profile-form-group">
             <label>Secret Code:</label>
-            <input type="text" name="secret_code" id="secret_code" value="<?php echo htmlspecialchars($secret_code); ?>" readonly>
-            <small style="color: orange;">Contact Super Admin to change your Secret Code.</small>
+            <p id="secret_code" style="display: flex; align-items: center; font-size: 1em; background-color: #fff4e6; padding: 10px; border: 1px solid #ffc107; border-radius: 5px; color: #333;">
+    <i class="fa fa-exclamation-triangle" style="font-size: 1.8em; color: #ff9800; margin-right: 10px;"></i>
+    <span>
+        To change the secret code, you must contact the super admin. <strong style="color: #d32f2f;">Contact the super admin physically.</strong>
+    </span>
+</p>
         </div>
 
         <button type="submit" class="profile-btn">Save Changes</button>
     </form>
 </div>
-
+<script>
+window.onload = function() {
+    showContent('welcomeContent');
+};
+</script>
             <script>
 function loadProfileContent() {
     var contents = document.querySelectorAll('.main-content');
