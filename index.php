@@ -52,7 +52,7 @@ try {
         }
 
         .logo-box {
-          background-color:green;
+          background-color:greenyellow;
           height: 100%;
           padding: 0 12px;
           display: flex;
