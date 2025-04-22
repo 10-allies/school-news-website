@@ -63,3 +63,84 @@
 }
 .left { left: 10px; }
 .right { right: 10px; }
+.the-body{
+    font-family: Arial, sans-serif;
+    background-color: #f0f8ff; /* Light blue background */
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    margin: 0;
+}
+.weather-container {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 80%;
+    max-width: 700px;
+    opacity: 0; /* Initially hidden */
+    visibility: hidden;
+    position: fixed; /* To act like a pop-up */
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8); /* Initial smaller scale */
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out, transform 0.5s ease-in-out;
+    z-index: 10; /* Ensure it's on top of other content */
+}
+.weather-container.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1); /* Appear at full scale */
+}
+.current-weather {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.current-time {
+    color: #777;
+    font-size: 0.9em;
+}
+.report-button {
+    background-color: #e0f2f7; /* Light teal */
+    color: #00796b; /* Teal text */
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+}
+.report-button:hover {
+    background-color: #b2dfdb;
+}
+.temperature {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #00796b;
+    display: flex;
+    align-items: center;
+}
+.condition {
+    color: #555;
+    font-size: 1.1em;
+    margin-top: 5px;
+}
+.details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+    margin-top: 20px;
+    text-align: left;
+}
+.detail-item {
+    font-size: 0.95em;
+    color: #666;
+}
+.detail-label {
+    font-weight: bold;
+    color: #444;
+}

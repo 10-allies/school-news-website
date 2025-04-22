@@ -76,6 +76,28 @@ try {
                 <p>No announcements available.</p>  
             <?php endif; ?>  
         <?php endif; ?>  
+    </div>
+    <div class="the-body">
+    <div class="weather-container" id="weatherContainer">
+        <div class="current-weather">
+            <div class="current-time" id="current-time"></div>
+            <button class="report-button" onclick="reportWeather()">Report weather</button>
+        </div>
+        <div class="temperature">
+            <span id="weather-symbol" style="color: orange">&#x2600;</span>
+            <span id="temperature"></span> <span style="font-size: 0.8em;">°C</span>
+        </div>
+        <div class="condition" id="condition"></div>
+        <div class="details">
+            <div class="detail-item"><span class="detail-label">Wind</span><br><span id="wind"></span></div>
+            <div class="detail-item"><span class="detail-label">Humidity</span><br><span id="humidity"></span></div>
+            <div class="detail-item"><span class="detail-label">Feels like</span><br><span id="feels-like"></span></div>
+            <div class="detail-item"><span class="detail-label">Visibility</span><br><span id="visibility"></span></div>
+            <div class="detail-item"><span class="detail-label">UV index</span><br><span id="uv-index"></span></div>
+            <div class="detail-item"><span class="detail-label">Pressure</span><br><span id="pressure"></span></div>
+            <div class="detail-item"><span class="detail-label">Dew point</span><br><span id="dew-point"></span></div>
+        </div>
+    </div>
     </div>  
 
     <script src="index.js"></script>
