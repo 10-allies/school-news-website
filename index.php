@@ -120,7 +120,7 @@ try {
     <div class="wrapper">
         <div class="top-nav">
             <div class="logo-box">
-                <img src="image/claudia (1).gif" alt="Alliance Logo">
+                <img src="./images/claudia (1).gif" alt="Alliance Logo">
             </div>
             <div class="site-title">ALLIANCE</div>
             <div class="nav-links">
