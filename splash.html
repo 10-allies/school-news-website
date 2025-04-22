@@ -9,7 +9,8 @@
         setTimeout(function() {  
             document.querySelector('.splash-screen').classList.add('split');  
             setTimeout(() => {  
-                window.location.href = "index.php"; // This links to your main page  
+                window.location.href = "index.php?from_splash=1";
+              // This links to your main page  
             }, 1000); // Wait for the split animation to finish before redirecting  
         }, 5000); // Show the splash for 5 seconds  
     </script>  

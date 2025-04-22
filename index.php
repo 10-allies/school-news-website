@@ -1,11 +1,12 @@
 <?php  
 
-// Redirect to splash page if the user hasn't seen it yet
-if (!isset($_COOKIE['splash_seen'])) {
-    setcookie('splash_seen', '1', time() + 3600); // Cookie lasts 1 hour
+
+if (!isset($_GET['from_splash'])) {
     header("Location: splash.html");
     exit();
 }
+
+
 
 
 include 'connection/connect.php';   
