@@ -1,19 +1,25 @@
 <?php  
 include 'config.php'; // Include the database connection  
 
-// Fetch articles from the database  
-$sql = "SELECT * FROM articles ORDER BY date_published DESC"; // Latest articles first  
-$result = $conn->query($sql);  
+try {  
+    // Create a PDO instance  
+    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);  
+    // Set the PDO error mode to exception  
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);  
 
-$articles = [];  
-if ($result->num_rows > 0) {  
-    // Fetch each article  
-    while($row = $result->fetch_assoc()) {  
-        $articles[] = $row;  
-    }  
+    // Prepare the SQL statement  
+    $sql = "SELECT * FROM articles ORDER BY date_published DESC"; // Latest articles first  
+    $stmt = $conn->prepare($sql);  
+    $stmt->execute();  
+
+    // Fetch articles  
+    $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);  
+} catch (PDOException $e) {  
+    echo "Connection failed: " . $e->getMessage();  
 }  
 
-$conn->close();  
+// Close the connection  
+$conn = null;  
 
 // Return articles as JSON  
 header('Content-Type: application/json');  
