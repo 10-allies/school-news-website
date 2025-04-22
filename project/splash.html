@@ -1,0 +1,112 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Welcome</title>  
+    <script>  
+        // Time to wait before the split animation starts  
+        setTimeout(function() {  
+            document.querySelector('.splash-screen').classList.add('split');  
+            setTimeout(() => {  
+                window.location.href = "index.html"; // This links to your main page  
+            }, 1000); // Wait for the split animation to finish before redirecting  
+        }, 5000); // Show the splash for 5 seconds  
+    </script>  
+    <style>  
+        * {  
+            margin: 0;  
+            padding: 0;  
+            box-sizing: border-box;  
+        }  
+
+        body, html {  
+            height: 100%;  
+            overflow: hidden; /* Prevent scrolling */  
+            background-color: white; /* Keep background white */  
+        }  
+
+        .splash-screen {  
+            position: relative;  
+            height: 100%;  
+            width: 100%;  
+            display: flex;  
+            justify-content: center;  
+            align-items: center;  
+            overflow: hidden; /* Hide overflow during animation */  
+            transition: transform 1s; /* Smooth transition for split effect */  
+        }  
+
+      
+.container {  
+    position: relative; /* Position relative for absolute positioning within */  
+    width: 200px; /* Container size */  
+    height: 200px; /* Container size */  
+    margin: auto; /* Center the container */  
+}  
+
+.logo {  
+    position: absolute; /* Positioning of the logo */  
+    top: 50%; /* Center vertically */  
+    left: 50%; /* Center horizontally */  
+    transform: translate(-50%, -50%); /* Adjust positioning */  
+    z-index: 1; /* Keep logo above the line */  
+}  
+
+.line {  
+    position: absolute;  
+    width: 220%; /* Beyond normal size for full rotation */  
+    height: 220%; /* Beyond normal size for full rotation */  
+    border-radius: 50%; /* Maintain circular shape */  
+    border: 8px solid black; /* Increased thickness of the line */  
+    animation: rotate 2s linear infinite; /* Animation for rotation */  
+    clip-path: inset(0 50%); /* Clip to show half the line, simulate a circular path */  
+    top: -10%; /* Adjust top offset for better alignment */  
+    left: -10%; /* Adjust left offset for better alignment */  
+}  
+
+@keyframes rotate {  
+    from {  
+        transform: rotate(0deg); /* Start position */  
+    }  
+    to {  
+        transform: rotate(360deg); /* End position */  
+    }  
+}  
+ 
+
+        /* Split effect for the splash screen */  
+        .splash-screen.split {  
+            display: flex;  
+            height: 100vh;  
+        }  
+
+        .splash-screen.split::before,  
+        .splash-screen.split::after {  
+            content: '';  
+            position: absolute;  
+            top: 0;  
+            width: 50%;  
+            height: 100%;  
+            background: white; /* Keep part of the background white */  
+            transition: transform 1s; /* Smooth transition */  
+        }  
+
+        .splash-screen.split::before {  
+            left: 0; /* Left side */  
+            transform: translateY(-100%); /* Move up */  
+        }  
+
+        .splash-screen.split::after {  
+            right: 0; /* Right side */  
+            transform: translateY(100%); /* Move down */  
+        }  
+    </style>  
+</head>  
+<body>  
+    <div class="splash-screen">  
+        <div class="circle"></div>  
+        <img src="image/claudia (1).gif" alt="Your Logo" class="logo">  
+    </div>  
+</body>  
+</html>  
