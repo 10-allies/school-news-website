@@ -4,11 +4,12 @@ $db = 'sports_news';
 $user = 'root'; // Change if your username is different  
 $password = ''; // Change if you have a different password  
 
-// Create connection  
-$conn = new mysqli($host, $user, $password, $db);  
-
-// Check connection  
-if ($conn->connect_error) {  
-    die("Connection failed: " . $conn->connect_error);  
+try {  
+    // Create a PDO instance  
+    $conn = new PDO("mysql:host=$host;dbname=$db", $user, $password);  
+    // Set the PDO error mode to exception  
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);  
+} catch (PDOException $e) {  
+    die("Connection failed: " . $e->getMessage());  
 }  
 ?>  
