@@ -136,7 +136,7 @@ try {
             <div class="nav-links">
                 <a href="#">All</a>
                 <a href="#">Local news</a>
-                <a href="sport.html">Sports</a>
+                <a href="sport.php">Sports</a>
                 <a href="#">Entertainment</a>
                 <li><a href="#" onclick="showContent(event, 'anounce')">School Announcement</a></li>  
             </div>

@@ -113,7 +113,7 @@ $authorName = $author['author_name'] ?? '';
                 <div class="announce-header">
                 <h3>Give an announcement</h3>
                 </div>
-                <form action="annunce.php" method="POST" enctype="multipart/form-data">
+                <form action="announce.php" method="POST" enctype="multipart/form-data">
                 <div class="announce-all">
                     <div class="announce-content">
                       <p>Write to your students what you want to share today *</p>

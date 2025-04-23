@@ -35,7 +35,7 @@
         }  
 
         .logo-box {  
-            background-color: greenyellow;  
+            background-color: #f39800;  
             height: 100%;  
             padding: 0 12px;  
             display: flex;  
@@ -137,6 +137,7 @@
             text-align: center;  
             margin: 20px 0;  
         }  
+      
     </style>  
 </head>  
 <body>  
@@ -144,29 +145,33 @@
         <!-- Top Navigation -->  
         <div class="top-nav">  
             <div class="logo-box">  
-                <img src="./images/claudia (1).gif" alt="Alliance Logo">  
+                <img src="image/claudia (1).gif" alt="Alliance Logo">  
             </div>  
             <div class="site-title">ALLIANCE</div>  
             <div class="nav-links">  
-                <a href="#">All</a>
-                <a href="#">Local news</a>
-                <a href="">Sports</a>
-                <a href="#">Entertainment</a>
-                <li><a href="#" onclick="showContent(event, 'anounce')">School Announcement</a></li> 
+                <a href="#">News</a>  
+                <a href="#">HOPE-News</a>  
+                <a href="#">Explained</a>  
+                <a href="#">Opinion</a>  
+                <a href="sport.html">Sport</a>  
+                <a href="#">Video</a>  
+                <a href="#">More</a>  
             </div>  
         </div>  
 
         <!-- Main Heading -->  
-        <h1 class="page-heading">Basket Ball Time</h1>  
+        <h1 class="page-heading">SPORT</h1>  
 
         <!-- Navigation Bar for Sports Categories -->  
         <nav class="navbar">  
             <ul>  
-                  
-                <li><a href="football.html">Football</a></li>  
-                <li><a href="basketball.html">Basketball</a></li> 
-                <li><a href="volleyball.html">Volleyball</a></li> 
-                <li><a href="hhl.html">HOPE HAVEN LEAGUE</a></li>  
+                <li><a href="#">Cricket</a></li>  
+                <li><a href="#">Football</a></li>  
+                <li><a href="#">Basketball</a></li>  
+                <li><a href="#">Motorsports</a></li>  
+                <li><a href="#">Boxing</a></li>  
+                <li><a href="#">MMA</a></li>  
+                <li><a href="#">HOPE HAVEN LEAGUE</a></li>  
             </ul>  
         </nav>  
 
@@ -199,55 +204,28 @@
                 </div>  
             </div>  
         </div>  
-     </div>  
+    </div>  
 
-     <script>  
+    <script>  
         document.addEventListener('DOMContentLoaded', function() {  
             fetch('fetch_articles.php')  
                 .then(response => response.json())  
                 .then(data => {  
-                    const mainContainer = document.querySelector('.main-news');  
-                    const sidebarContainer = document.querySelector('.sidebar');  
-    
-                    // Clear existing content  
-                    mainContainer.innerHTML = '';  
-                    sidebarContainer.innerHTML = '';  
-    
-                    // Sidebar section for displaying all articles  
-                    data.forEach((article) => {  
-                        const sidebarArticleDiv = document.createElement('div');  
-                        sidebarArticleDiv.innerHTML = `  
+                    const container = document.querySelector('.main-news');  
+                    // Clear the current content  
+                    container.innerHTML = '';  
+                    // Loop through articles and create HTML elements  
+                    data.forEach(article => {  
+                        const articleDiv = document.createElement('div');  
+                        articleDiv.innerHTML = `  
                             <img src="${article.image_url}" alt="${article.title}">  
-                            <div>  
-                                <a href="#" class="sidebar-link" data-title="${article.title}" data-description="${article.description}" data-image="${article.image_url}">${article.title}</a>  
-                                <div class="date">${new Date(article.date_published).toLocaleDateString()}</div>  
-                            </div>  
+                            <p>${article.description} <a href="#">Read more...</a></p>  
                         `;  
-                        sidebarContainer.appendChild(sidebarArticleDiv);  
-                    });  
-    
-                    // Click event for sidebar links  
-                    document.querySelectorAll('.sidebar-link').forEach(link => {  
-                        link.addEventListener('click', function(event) {  
-                            event.preventDefault(); // Prevent default anchor click behavior  
-                            const title = this.getAttribute('data-title');  
-                            const description = this.getAttribute('data-description');  
-                            const image = this.getAttribute('data-image');  
-                            displayMainArticle(title, description, image);  
-                        });  
+                        container.appendChild(articleDiv);  
                     });  
                 })  
                 .catch(error => console.error('Error fetching articles:', error));  
         });  
-    
-        function displayMainArticle(title, description, image) {  
-            const mainContainer = document.querySelector('.main-news');  
-            mainContainer.innerHTML = `  
-                <img src="${image}" alt="${title}">  
-                <h2>${title}</h2>  
-                <p>${description}</p>  
-            `;  
-        }  
-    </script>
+    </script>  
 </body>  
 </html>  
