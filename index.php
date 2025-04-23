@@ -79,13 +79,13 @@ try {
           font-size: 18px;
           font-weight: bold;
           color:6cfa3a;
-          margin-left: 10px;
+          margin-left: 15px;
         }
 
         .nav-links {
           display: flex;
           gap: 25px;
-          margin-left: 40px;
+          margin-left: 50px;
           font-weight: bold;
         }
 
