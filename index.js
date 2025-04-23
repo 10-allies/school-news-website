@@ -45,7 +45,7 @@ const apiKey = 'f59b33991db34a529fb115953252104'; // Insert your API key here
         const longitude = 30.0616; // Longitude for Kigali
         const weatherSymbolElement = document.getElementById('weather-symbol');
         const weatherContainer = document.getElementById('weatherContainer');
-        const displayDuration = 5000; // 5 seconds in milliseconds
+        const displayDuration = 3000; // 5 seconds in milliseconds
 
         function updateTime() {
             const now = new Date();
@@ -85,7 +85,7 @@ const apiKey = 'f59b33991db34a529fb115953252104'; // Insert your API key here
             document.getElementById('pressure').textContent = `${data.current.pressure_mb} mb`;
             document.getElementById('dew-point').textContent = `${Math.round(data.current.dewpoint_c)}°`;
 
-            if (temperature <= 5 && humidity>= 80) {
+            if (temperature <= 5 || humidity>= 80) {
                 weatherSymbolElement.textContent = '\u2614'; // Umbrella emoji for cold/rainy
                 weatherSymbolElement.style.color = 'lightblue'; // Change color to indicate cold
             } else {
