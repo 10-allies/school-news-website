@@ -164,8 +164,9 @@
             <ul>  
                   
                 <li><a href="football.html">Football</a></li>  
-                <li><a href="basketball.html">Basketball</a></li>  
-                <li><a href="#">HOPE HAVEN LEAGUE</a></li>  
+                <li><a href="basketball.html">Basketball</a></li> 
+                <li><a href="volleyball.html">Volleyball</a></li> 
+                <li><a href="hhl.html">HOPE HAVEN LEAGUE</a></li>  
             </ul>  
         </nav>  
 
@@ -208,43 +209,45 @@
                     const mainContainer = document.querySelector('.main-news');  
                     const sidebarContainer = document.querySelector('.sidebar');  
     
-                    // Clear existing content in both sections  
+                    // Clear existing content  
                     mainContainer.innerHTML = '';  
                     sidebarContainer.innerHTML = '';  
     
-                    // Use variables to control the limits  
-                    const mainNewsLimit = 1;     // Total main news articles to display  
-                    const sidebarLimit = 6;       // Total sidebar articles to display  
-                    const totalLimit = mainNewsLimit + sidebarLimit;  
+                    // Sidebar section for displaying all articles  
+                    data.forEach((article) => {  
+                        const sidebarArticleDiv = document.createElement('div');  
+                        sidebarArticleDiv.innerHTML = `  
+                            <img src="${article.image_url}" alt="${article.title}">  
+                            <div>  
+                                <a href="#" class="sidebar-link" data-title="${article.title}" data-description="${article.description}" data-image="${article.image_url}">${article.title}</a>  
+                                <div class="date">${new Date(article.date_published).toLocaleDateString()}</div>  
+                            </div>  
+                        `;  
+                        sidebarContainer.appendChild(sidebarArticleDiv);  
+                    });  
     
-                    // Loop through articles up to the total limit  
-                    data.slice(0, totalLimit).forEach((article, index) => {  
-                        // Main news section  
-                        if (index < mainNewsLimit) {  
-                            const articleDiv = document.createElement('div');  
-                            articleDiv.innerHTML = `  
-                                <img src="${article.image_url}" alt="${article.title}">  
-                                <p>${article.description} <a href="#">Read more...</a></p>  
-                            `;  
-                            mainContainer.appendChild(articleDiv);  
-                        }  
-    
-                        // Sidebar section for articles beyond the main news limit  
-                        if (index >= mainNewsLimit && index < totalLimit) {  
-                            const sidebarArticleDiv = document.createElement('div');  
-                            sidebarArticleDiv.innerHTML = `  
-                                <img src="${article.image_url}" alt="${article.title}">  
-                                <div>  
-                                    <a href="#">${article.title}</a>  
-                                    <div class="date">${new Date(article.date_published).toLocaleDateString()}</div>  
-                                </div>  
-                            `;  
-                            sidebarContainer.appendChild(sidebarArticleDiv);  
-                        }  
+                    // Click event for sidebar links  
+                    document.querySelectorAll('.sidebar-link').forEach(link => {  
+                        link.addEventListener('click', function(event) {  
+                            event.preventDefault(); // Prevent default anchor click behavior  
+                            const title = this.getAttribute('data-title');  
+                            const description = this.getAttribute('data-description');  
+                            const image = this.getAttribute('data-image');  
+                            displayMainArticle(title, description, image);  
+                        });  
                     });  
                 })  
                 .catch(error => console.error('Error fetching articles:', error));  
         });  
+    
+        function displayMainArticle(title, description, image) {  
+            const mainContainer = document.querySelector('.main-news');  
+            mainContainer.innerHTML = `  
+                <img src="${image}" alt="${title}">  
+                <h2>${title}</h2>  
+                <p>${description}</p>  
+            `;  
+        }  
     </script>  
 </body>  
 </html>  

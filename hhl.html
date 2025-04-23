@@ -1,0 +1,152 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <link rel="stylesheet" href="styles.css">  
+    <title>Hope Haven League</title>  
+    <style>  
+        * {  
+            margin: 0;  
+            padding: 0;  
+            box-sizing: border-box;  
+        }  
+
+        body {  
+            font-family: Arial, sans-serif;  
+            background-color: #fff;  
+            display: flex;  
+            justify-content: center;  
+        }  
+
+        .wrapper {  
+            width: 100%;  
+            max-width: 1250px;  
+        }  
+
+        /* Top Nav */  
+        .top-nav {  
+            margin-top: 100px;  
+            display: flex;  
+            align-items: center;  
+            padding: 0 20px;  
+            height: 65px;  
+            border-bottom: 1px solid #e0e0e0;  
+        }  
+
+        .logo-box {  
+            background-color: greenyellow;  
+            height: 100%;  
+            padding: 0 12px;  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+        }  
+
+        .logo-box img {  
+            height: 46px;  
+            width: auto;  
+        }  
+
+        .site-title {  
+            font-size: 18px;  
+            font-weight: bold;  
+            color: #f39800;  
+            margin-left: 10px;  
+        }  
+
+        .nav-links {  
+            display: flex;  
+            gap: 25px;  
+            margin-left: 40px;  
+            font-weight: bold;  
+        }  
+
+        .nav-links a {  
+            text-decoration: none;  
+            color: black;  
+            font-size: 16px;  
+            position: relative;  
+            padding-bottom: 5px;  
+            transition: color 0.2s ease-in-out;  
+        }  
+
+        .nav-links a:hover {  
+            color: #1a73e8;  
+        }  
+
+        .nav-links a:hover::after {  
+            content: "";  
+            position: absolute;  
+            bottom: 0;  
+            left: 0;  
+            height: 2px;  
+            width: 100%;  
+            background-color: #1a73e8;  
+        }  
+
+        .nav-links a::after {  
+            content: ' ▾';  
+            font-size: 12px;  
+            display: inline-block;  
+        }  
+
+        /* Main Content Styles */  
+        h1.page-heading {  
+            text-align: center;  
+            margin: 20px 0;  
+        }  
+
+        .message-container {  
+            text-align: center;  
+            margin-top: 40px;  
+            padding: 20px;  
+            border: 1px solid #e0e0e0;  
+            border-radius: 8px;  
+            background-color: #f9f9f9;  
+        }  
+
+        p {  
+            font-size: 18px;  
+            color: #555;  
+        }  
+    </style>  
+</head>  
+<body>  
+    <div class="wrapper">  
+        <!-- Top Navigation -->  
+        <div class="top-nav">  
+            <div class="logo-box">  
+                <img src="./images/claudia (1).gif" alt="Alliance Logo">  
+            </div>  
+            <div class="site-title">ALLIANCE</div>  
+            <div class="nav-links">  
+                <a href="#">All</a>  
+                <a href="#">Local news</a>  
+                <a href="">Sports</a>  
+                <a href="#">Entertainment</a>  
+                <li><a href="#" onclick="showContent(event, 'anounce')">School Announcement</a></li>   
+            </div>  
+        </div> 
+        
+        
+
+        <!-- Main Heading -->  
+        <h1 class="page-heading">Hope Haven League</h1> 
+        
+        <nav class="navbar">  
+            <ul>    
+                <li><a href="football.html">Football</a></li>  
+                <li><a href="basketball.html">Basketball</a></li>
+                <li><a href="volleyball.html">Volleyball</a></li>  
+                <li><a href="hhl.html">HOPE HAVEN LEAGUE</a></li>  
+            </ul>  
+        </nav>
+
+        <!-- Message Section -->  
+        <div class="message-container">  
+            <p>The page is not available right now. It is still under development. Any changes will be updated later.</p>  
+        </div>  
+    </div>  
+</body>  
+</html>  
