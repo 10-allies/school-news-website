@@ -218,13 +218,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['image']) && $_FILES['
 
     <h1 class="page-heading">SPORT</h1>  
 
-<div class="subnav">
+    <div class="subnav">
     <?php foreach ($sections as $section): ?>
-        <a href="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>?section_id=<?= $section['section_id'] ?>">
-            <?= htmlspecialchars($section['section_name']) ?>
-        </a>
+        <?php if ($section['section_name'] === 'Hope Premier League'): ?>
+            <a href="premier_league.php">
+                <?= htmlspecialchars($section['section_name']) ?>
+            </a>
+        <?php else: ?>
+            <a href="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>?section_id=<?= $section['section_id'] ?>">
+                <?= htmlspecialchars($section['section_name']) ?>
+            </a>
+        <?php endif; ?>
     <?php endforeach; ?>
 </div>
+
 
 
 <div class="container">
