@@ -2,7 +2,7 @@
 require_once './connection/connect.php';
 
 try {
-    // Fetch completed matches
+    
     $stmt1 = $pdo->prepare("SELECT m.match_id, m.match_date, m.home_score, m.away_score, 
                             t1.team_name AS team_home, t2.team_name AS team_away, 
                             t1.logo_url AS home_logo, t2.logo_url AS away_logo
@@ -14,7 +14,7 @@ try {
     $stmt1->execute(['status' => 'completed']);
     $completed = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 
-    // Fetch upcoming matches
+
     $stmt2 = $pdo->prepare("SELECT m.match_id, m.match_date, t1.team_name AS team_home, 
                             t2.team_name AS team_away, t1.logo_url AS home_logo, t2.logo_url AS away_logo
                             FROM matches m
@@ -25,7 +25,7 @@ try {
     $stmt2->execute(['status' => 'upcoming']);
     $upcoming = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 
-    // Fetch top scorers
+
     $stmt3 = $pdo->prepare("SELECT p.player_name, t.team_name, SUM(g.goal_time) AS goals
                             FROM goals g
                             JOIN players p ON g.player_id = p.player_id
@@ -36,7 +36,7 @@ try {
     $stmt3->execute();
     $scorers = $stmt3->fetchAll(PDO::FETCH_ASSOC);
 
-    // Fetch league standings
+
     $stmt4 = $pdo->prepare("SELECT t.team_name, 
                             SUM(CASE WHEN m.home_score > m.away_score THEN 3 
                                      WHEN m.home_score = m.away_score THEN 1
@@ -249,7 +249,7 @@ try {
 
 <div class="league-info">
     <div class="league-container">
-        <!-- Completed Matches Section -->
+    
         <h2>✅ Completed Matches</h2>
         <div class="completed-matches">
             <ul>
@@ -266,7 +266,7 @@ try {
             </ul>
         </div>
 
-        <!-- Upcoming Matches Section -->
+    
         <h2>📅 Upcoming Matches</h2>
         <div class="upcoming-matches">
             <ul>

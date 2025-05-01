@@ -70,7 +70,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    
+    margin-left: 3em;
     margin: 0;
 }
 .weather-container {
