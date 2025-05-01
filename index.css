@@ -13,14 +13,7 @@
 .header-right ul li:hover, .header-right ul li a:hover { color: rgb(4, 70, 4); }
 .logo img { width: 70%; height: 7em; margin-left: 2em; padding-top: 1em; }
 
-.sliding-news { 
-    height: 100em; 
-    background-image: url("./Images/kk1.jpg"); 
-    background-size: cover; 
-    background-position: center; 
-    background-repeat: no-repeat; 
-    transition: all 0.5s ease;
-}
+
 .main-content { 
     height: auto; 
     margin-left: 2em; 
@@ -36,18 +29,6 @@
     border-radius: 5px; 
     background-color: #f9f9f9; 
 }
-.slider { 
-    position: relative; 
-    margin: auto; 
-    width: 100%; 
-    background-color: rgba(255, 255, 255, 0.9); 
-    overflow: hidden; 
-    margin-top: 2em;
-}
-.slides { display: flex; transition: transform 0.5s ease; }
-.slide { display: flex; min-width: 100%; box-sizing: border-box; text-align: center; }
-.slide p { font-size: 1.4em; }
-.slide img { margin-left: 2em; width: 42%; height: auto; }
 .nav { 
     position: absolute; 
     top: 50%; 
@@ -144,3 +125,52 @@
     font-weight: bold;
     color: #444;
 }
+
+/*SLIDER NEWS */
+.slider-container {
+    position: relative;
+    width: 90%;
+    max-width: 1500px;
+    margin-top: 1px;
+    overflow: hidden;
+    border: 2px solid #000;
+}
+
+.slider {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    min-width: 100%;
+    text-align: center;
+    padding: 20px;
+    background: #333;
+    color: white;
+}
+
+.slide img {
+    width: 100%;
+    max-height: 350px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
+}s

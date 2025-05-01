@@ -146,24 +146,45 @@ try {
         </div>
     </div>
     <!-- NEW NAVBAR END -->
-
-    <div class="sliding-news">  
-        <div class="slider">  
-            <div class="slides" id="slides">  
-                <div class="slide">  
-                    <img src="./Images/10.png" alt="">  
-                    <div class="content">  
-                        <p><a href="#">Sample headline for your sliding news</a></p>  
-                    </div>  
-                </div>  
-                <div class="slide">  
-                    <img src="./Images/10.png" alt="">  
-                    <p><a href="#">Another important news headline here</a></p>  
-                </div>  
-            </div>  
-            <button class="nav right" onclick="moveSlide(1)">&#10095;</button>  
-        </div>  
-    </div>  
+    <div class="slider-container">
+        <div class="slider">
+            <div class="slide">
+                <img src="images/10.png" alt="Breaking News">
+                <p>Breaking News: Major Global Event Unfolds</p>
+            </div>
+            <div class="slide">
+                <img src="images/kk1.jpg" alt="Tech Update">
+                <p>Tech Update: New AI Features Announced</p>
+            </div>
+            <div class="slide">
+                <img src="images/reporter.png" alt="Sports Victory">
+                <p>Sports: Historic Victory in Championship</p>
+            </div>
+            <div class="slide">
+                <img src="images/Blue folder with information about employee 3D illustration.jpg" alt="Entertainment">
+                <p>Entertainment: Upcoming Blockbuster Movie Revealed</p>
+            </div>
+        </div>
+        <button class="prev" onclick="prevSlide()">&#10094;</button>
+        <button class="next" onclick="nextSlide()">&#10095;</button>
+    </div>
+    <!--<div class="sliding-news">  --> 
+      <!--  <div class="slider">   -->
+        <!--    <div class="slides" id="slides">  --> 
+          <!--      <div class="slide">   -->
+          <!--          <img src="./Images/10.png" alt="">   -->
+          <!--          <div class="content">   -->
+           <!--             <p><a href="#">Sample headline for your sliding news</a></p>  --> 
+            <!--        </div>   -->
+            <!--    </div>   -->
+              <!--  <div class="slide"> -->  
+               <!--     <img src="./Images/10.png" alt="">   -->
+               <!--     <p><a href="#">Another important news headline here</a></p>   -->
+               <!-- </div>   -->
+          <!--  </div>   -->
+          <!--  <button class="nav right" onclick="moveSlide(1)">&#10095;</button> -->  
+       <!-- </div>   -->
+   <!-- </div>   -->
 
     <div class="main-content" id="anounce">  
         <h2>Recent Announcements</h2>  
