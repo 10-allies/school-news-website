@@ -5,41 +5,90 @@ body {
     background: #f5f5f5;
   }
   
-  /* NAVBAR */
+
+  .wrapper {
+    width: 100%;
+    max-width: 1250px;
+    margin: 0 auto;
+  }
+
+  /* Top Nav */
   .top-nav {
+    margin-top: 100px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    background-color: #222;
-    padding: 10px 20px;
-    color: #fff;
+    padding: 0 20px;
+    height: 65px;
+    border-bottom: 1px solid #e0e0e0;
   }
-  
+
+  .logo-box {
+    background-color:greenyellow;
+    height: 100%;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .logo-box img {
-    height: 50px;
+    height: 46px;
+    width: auto;
   }
-  
+
   .site-title {
-    font-size: 24px;
+    font-size: 18px;
     font-weight: bold;
+    color:6cfa3a;
+    margin-left: 15px;
   }
-  
+
   .nav-links {
     display: flex;
-    gap: 15px;
+    gap: 25px;
+    margin-left: 50px;
+    font-weight: bold;
   }
-  
+
   .nav-links a {
-    color: white;
     text-decoration: none;
+    color: black;
+    font-size: 16px;
+    position: relative;
+    padding-bottom: 5px;
+    transition: color 0.2s ease-in-out;
   }
-  
-  .nav-links a.active {
-    text-decoration: underline;
+
+  .nav-links a:hover {
+    color: #1a73e8;
   }
-  
+
+  .nav-links a:hover::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background-color: #1a73e8;
+  }
+
+  .nav-links a::after {
+    content: ' ▾';
+    font-size: 12px;
+    display: inline-block;
+  }
+
+  .nav-links a:last-child::after {
+    content: '';
+  }
+
   /* MAIN LAYOUT */
   .content-wrapper {
+    background-image: url(../images/one.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     display: flex;
     flex-direction: row;
     gap: 20px;
@@ -50,7 +99,7 @@ body {
   .main-news {
     flex: 3;
     height: 400px;
-    background: #fff;
+    background: rgba(255, 255, 255, 0.8);
     border-radius: 8px;
     padding: 15px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -88,7 +137,7 @@ body {
   /* SIDEBAR */
   .sidebar {
     flex: 1;
-    background: #fff;
+    background: rgba(255, 255, 255, 0.9);
     border-radius: 8px;
     padding: 15px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);

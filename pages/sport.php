@@ -204,10 +204,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['image']) && $_FILES['
             </div>
             <div class="site-title">ALLIANCE</div>
             <div class="nav-links">
-                <a href="#">All</a>
+                <a href="../index.php">All</a>
                 <a href="#">Local news</a>
-                <a href="./pages/sport.php">Sports</a>
-                <a href="#">Entertainment</a>
+                <a href="../pages/sport.php">Sports</a>
+                <a href="../pages/entertain.php">Entertainment</a>
                 <li><a href="#" onclick="showContent(event, 'anounce')">School Announcement</a></li>  
             </div>
         </div>

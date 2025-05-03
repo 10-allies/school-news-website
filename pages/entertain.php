@@ -5,25 +5,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Entertainment | APPEAL</title>
-  <link rel="stylesheet" href="entertain.css">
+  <link rel="stylesheet" href="entertain.css?v=1.0">
 </head>
 <body>
 
-  <!-- NAVIGATION BAR -->
-  <header class="top-nav">
-    <div class="logo-box">
-      <img src="../images/claudia (1).gif" alt="Alliance Logo">
-    </div>
-    <div class="site-title">APPEAL</div>
-    <nav class="nav-links">
-      <a href="../index.php">All</a>
-      <a href="#">Local News</a>
-      <a href="../pages/sport.php">Sports</a>
-      <a href="../pages/entertain.php" class="active">Entertainment</a>
-      <a href="#" onclick="showContent(event, 'anounce')">School Announcement</a>
-    </nav>
-  </header>
+ <!-- NEW NAVBAR START -->
+ <div class="wrapper">
+        <div class="top-nav">
+            <div class="logo-box">
+                <img src="../images/claudia (1).gif" alt="Alliance Logo">
+            </div>
+            <div class="site-title">APPEAL</div>
+            <div class="nav-links">
+                <a href="#">All</a>
+                <a href="#">Local news</a>
+                <a href="../pages/sport.php">Sports</a>
+                <a href="../pages/entertain.php">Entertainment</a>
+                <li><a href="#" onclick="showContent(event, 'anounce')">School Announcement</a></li>  
+            </div>
+        </div>
 
+        
+        </div>
+    </div>
+    <!-- NEW NAVBAR END -->
+     
   <!-- PAGE CONTENT -->
   <main class="content-wrapper">
     

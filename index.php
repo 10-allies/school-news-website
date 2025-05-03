@@ -9,7 +9,7 @@ if (!isset($_GET['from_splash'])) {
 
 
 
-include 'connection/connect.php';   
+include '../connection/connect.php';   
 session_start();  
 
 try {  
