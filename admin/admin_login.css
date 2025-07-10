@@ -22,6 +22,9 @@ body {
     align-items: center;
     padding: 2em;
 }
+#login-section {
+      display: none; /* Hidden until JS validation passes */
+    }
 
 .login-form fieldset {
     width: 100%;

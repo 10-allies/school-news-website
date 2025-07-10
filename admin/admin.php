@@ -1,12 +1,11 @@
 <?php
 session_start();
-include '../connection/connect.php';
+include '../connection/connect.php'; // Ensure this path is correct for your 'connect.php' file
 
-
-
-header("Cache-Control: no-cache, no-store, must-revalidate"); 
-header("Pragma: no-cache"); 
-header("Expires: 0"); 
+// --- Session and User Authentication ---
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: admin_login.php');
@@ -14,10 +13,11 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $nickname_set = false;
-$nickname = 'Media club';
+$nickname = 'Media club'; // Default nickname
+
+$author = null; // Initialize $author to prevent undefined variable notice later
 
 if ($_SESSION['role'] == 'author') {
-    
     $stmt = $pdo->prepare("SELECT author_name, author_display_name FROM authors WHERE author_id = ?");
     $stmt->execute([$_SESSION['user_id']]);
     $author = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -28,22 +28,62 @@ if ($_SESSION['role'] == 'author') {
     }
 }
 
+// --- Fetch data for dropdowns ---
+// Initialize these arrays in case of database connection issues or no records
+$sections = [];
+$authors_for_dropdown = []; // Renamed to avoid conflict with $author variable for the logged-in author
+
+try {
+    $sections_stmt = $pdo->query("SELECT section_id, section_name FROM sections ORDER BY section_name ASC");
+    $sections = $sections_stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    // Log the error or display a user-friendly message
+    // For debugging: echo "Error fetching sections: " . $e->getMessage();
+    // In production, you might want a more generic message or log to a file.
+    $message = "<div class='error'>? Error fetching sections: Database error.</div>";
+}
+
+try {
+    $authors_stmt = $pdo->query("SELECT author_id, author_display_name FROM authors ORDER BY author_display_name ASC");
+    $authors_for_dropdown = $authors_stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    // Log the error or display a user-friendly message
+    // For debugging: echo "Error fetching authors: " . $e->getMessage();
+    $message = "<div class='error'>? Error fetching authors for dropdown: Database error.</div>";
+}
+
+
+// --- Handle Nickname Submission ---
 if (isset($_POST['set_nickname']) && !empty($_POST['nickname'])) {
     $new_nickname = trim($_POST['nickname']);
 
-   
-    $stmt = $pdo->prepare("UPDATE authors SET author_display_name = ? WHERE author_id = ?");
-    $stmt->execute([$new_nickname, $_SESSION['user_id']]);
+    // Update the author_display_name in the database
+    $stmt_update_nickname = $pdo->prepare("UPDATE authors SET author_display_name = ? WHERE author_id = ?");
+    $stmt_update_nickname->execute([$new_nickname, $_SESSION['user_id']]);
 
-    
+    // Update the flag and nickname variable
     $nickname_set = true;
+    $nickname = $new_nickname;
 
-    
+    // Redirect to prevent form resubmission
     header("Location: admin.php");
     exit();
 }
 
-$authorName = $author['author_name'] ?? '';
+$authorName = $author['author_name'] ?? ''; // For displaying the current author's name if needed elsewhere
+
+// --- Handle messages from sports_db.php redirect ---
+$message = ""; // Initialize message variable here to ensure it's always defined
+if (isset($_GET['status'])) {
+    if ($_GET['status'] === 'success') {
+        $message = "<div class='success'>? News uploaded successfully!</div>";
+    } elseif ($_GET['status'] === 'error') {
+        $error_msg = $_GET['msg'] ?? 'Unknown error.';
+        $message = "<div class='error'>? Error uploading news: " . htmlspecialchars($error_msg) . "</div>";
+    } elseif ($_GET['status'] === 'file_error') {
+        $message = "<div class='error'>? Error moving uploaded file. Check permissions for the uploads folder.</div>";
+    }
+}
 ?>
 
     <!DOCTYPE html>
@@ -51,11 +91,8 @@ $authorName = $author['author_name'] ?? '';
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://fonts.cdnfonts.com/css/tilt-prism" rel="stylesheet">
-        <link href="https://fonts.cdnfonts.com/css/equine" rel="stylesheet">
-        <link rel="stylesheet" href="admin.css?v=10.0">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <title>Admin panel</title>
+        <link rel="stylesheet" href="admin.css?v=13.0">
+        <title>THE APPEAL - ADMIN PANEL</title> 
     </head>
     <body>
     <?php if ($_SESSION['role'] == 'author' && !$nickname_set): ?>
@@ -80,17 +117,9 @@ $authorName = $author['author_name'] ?? '';
                 </div>
                 <ul class="sideMenu">
                     <h2>Uplaod</h2>
-                    <li><a href=""><i class="fa fa-newspaper-o"></i> Local news</a></li>
-                    <button class="dropdown-btn"><i class="fa fa-futbol-o"></i> Sports 
-                        <i class="fa fa-caret-down"></i>
-                    </button>
-                    <div class="dropdown-container">
-                        <a href="#"><i class="fa fa-soccer-ball-o"></i> Football</a>
-                        <a href="#"><i class="fa fa-dribbble"></i>  Basketball</a>
-                        <a href="#"><i class="fa fa-trophy"></i> Volleyball</a>
-                        <a href="#"><i class="fa fa-trophy"></i> Hope premier league</a>
-                    </div>
-                    <li><a href="#"><i class="fa fa-film"></i> entertainment</a></li>
+                    <li><a href="#"><i class="fa fa-newspaper-o"></i> Local news</a></li>
+                      <li><a href="#" onclick="showContent('content3')"><i class="fa fa-film"></i> Sports news</a></li>
+                    <li><a href="#" onclick="showContent('content2')"><i class="fa fa-film"></i> entertainment</a></li>
                     <li><a href="#" onclick="showContent('content1')"><i class="fa fa-bullhorn"></i> Announcement</a></li>
                     <button class="settings-dropdown"><i class="fa fa-cog"></i> Settings</button>
                     <div class="settings-dropdown-content">
@@ -102,39 +131,110 @@ $authorName = $author['author_name'] ?? '';
     </div>
     <div id="welcomeContent" class="main-content">
     <div class="welcome-card">
-        <h1>👋 Welcome, <?php echo htmlspecialchars($nickname); ?>!</h1>
+        <h1>?? Welcome, <?php echo htmlspecialchars($nickname); ?>!</h1>
         <p>We're happy to have you managing your content today.<br>Select a section from the left to get started.</p>
             <img src="../images/reporter.png" alt="Welcome Image" class="welcome-image">
     </div>
 </div>
 
-            <div id="content1" class="main-content">
-                
-                <div class="announce-header">
-                <h3>Give an announcement</h3>
-                </div>
-                <form action="announce.php" method="POST" enctype="multipart/form-data">
-                <div class="announce-all">
-                    <div class="announce-content">
-                      <p>Write to your students what you want to share today *</p>
-                      <textarea rows="6" placeholder="Write your announcement here..." name="announcement"></textarea>
-                    </div>
-                  
-                    <div class="announce-file">
-                      <p>Upload a file</p>
-                      <input type="file" id="fileInput" name ="announce_file">
-                      <div class="file-preview" id="filePreview">No file uploaded yet.</div>
-                    </div>
-                    <div class="by">
-                        <p>Announcement by:</p>
-                        <div class="by-name">
-                            <input type="text" placeholder="Enter your name" name="announcer_name" style="width: 100%; padding: 10px; border-radius: 5px; background-color: #2c2c2c; color: white; border: 1px solid #444;">
-                    </div>
-                  </div>
-                  <button  class="announce-btn" type="submit">Announce</button>
-                </div>
-          </form>
+ <div id="content1" class="main-content">
+    <div class="announce-header">
+        <h3>Give an announcement</h3>
+    </div>
+    <form action="announce.php" method="POST" enctype="multipart/form-data">
+        <div class="announce-all">
+            <div class="announce-content">
+                <p>Write to your students what you want to share today *</p>
+                <textarea rows="6" placeholder="Write your announcement here..." name="announcement"></textarea>
             </div>
+
+            <div class="announce-file">
+                <p>Upload a file</p>
+                <input type="file" id="fileInput" name ="announce_file">
+                <div class="file-preview" id="filePreview">No file uploaded yet.</div>
+            </div>
+            <div class="by">
+                <p>Announcement by:</p>
+                <div class="by-name">
+                    <input type="text" placeholder="Enter your name" name="announcer_name" style="width: 100%; padding: 10px; border-radius: 5px; background-color: #2c2c2c; color: white; border: 1px solid #444;">
+                </div>
+            </div>
+            <button class="announce-btn" type="submit">Announce</button>
+        </div>
+    </form>
+</div>
+            
+           <div id="content2" class="main-content" style="display:none;">
+    <h2 class="section-title">?? Submit New Entertainment News</h2>
+ <?php if (!empty($message)) echo $message; ?>
+        <form id="entertainmentForm" action="entertain2.php" method="POST" enctype="multipart/form-data">
+            <label for="entertainment_title">News title:</label>
+            <input type="text" name="title" id="entertainment_title" required>
+
+            <div class="entertainment-group">
+                <label for="entertainment_content">Content:</label>
+                <textarea name="content" id="entertainment_content" rows="8" required></textarea>
+                
+                <label for="author_id">Author:</label>
+                <select id="author_id" name="author_id" required>
+                    <?php foreach ($authors as $author): ?>
+                        <option value="<?php echo htmlspecialchars($author['author_id']); ?>">
+                            <?php echo htmlspecialchars($author['author_display_name']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                
+                <label for="entertainment_image">Image:</label>
+                <input type="file" name="image" id="entertainment_image" accept="image/*" required>
+
+                </div>
+
+            <input type="submit" class="entertainment-btn" value="POST NEWS">
+        </form>
+    </div>
+ <div id="content3" class="main-content">
+        <h2 class="section-title" style="text-align: center;">? Submit New Sports News</h2>
+
+        <?php echo $message; // Display messages here from form submission or data fetching errors ?>
+
+        <form action="sports_database.php" method="post" enctype="multipart/form-data">
+            <label for="title">Title:</label>
+            <input type="text" name="title" id="title" required>
+
+            <label for="content">Content:</label>
+            <textarea name="content" id="content" rows="6" required></textarea>
+
+            <label for="section_id">Section:</label>
+            <select name="section_id" id="section_id" required>
+                <?php if (!empty($sections)): ?>
+                    <?php foreach ($sections as $section): ?>
+                        <option value="<?= htmlspecialchars($section['section_id']) ?>"><?= htmlspecialchars($section['section_name']) ?></option>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <option value="">No sections available</option>
+                <?php endif; ?>
+            </select>
+
+            <label for="author_id">Author:</label>
+            <select id="author_id" name="author_id" required>
+                <?php if (!empty($authors_for_dropdown)): // Use the renamed variable here ?>
+                    <?php foreach ($authors_for_dropdown as $auth): // Use a different variable name for loop ?>
+                        <option value="<?php echo htmlspecialchars($auth['author_id']); ?>">
+                            <?php echo htmlspecialchars($auth['author_display_name']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <option value="">No authors available</option>
+                <?php endif; ?>
+            </select>
+
+            <label for="image">Upload Image:</label>
+            <input type="file" name="image" id="image" accept="image/*">
+
+            <button type="submit">Upload News</button>
+        </form>
+    </div>         
+     </div>
             <div id="profileContent" class="main-content" style="display:none;">
     <div class="profile-header">
         <h3>Profile Settings</h3>

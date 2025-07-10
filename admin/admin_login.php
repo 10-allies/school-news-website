@@ -41,6 +41,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login</title>
     <link rel="stylesheet" href="admin_login.css?v=1.0">
+    <script>    
+    window.onload = function () {
+    const correctUsername = "Alliance";
+    const correctPassword = "Ally123";
+
+    const username = prompt("Enter username:");
+    const password = prompt("Enter password:");
+
+    if (username === correctUsername && password === correctPassword) {
+      document.getElementById("login-section").style.display = "block";
+      document.body.style.backgroundColor = "white";
+    } else {
+      document.body.innerHTML = "<h1 style='color: red; text-align: center;'>You don't have access.</h1>";
+    }
+  };
+</script>
 </head>
 <body>
     

@@ -65,158 +65,256 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['image']) && $_FILES['
 <head>
     <title>Sports News</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
-        nav { background-color: #333; padding: 10px; }
-        nav a { color: white; margin-right: 15px; text-decoration: none; }
-        .subnav {
-            
-            background-color: white; 
-    padding: 10px 0;
-    text-align: center;
-    border-bottom: 1px solid #e0e0e0;
-        }
-        .subnav a { 
-            text-decoration: none;
-    color: black; /* make text black */
-    font-weight: bold;
-    font-size: 16px;
-    transition: color 0.3s;
-    margin: 0 15px;
-        }
-        .container { 
-        padding: 20px; 
-        background-image: url('./images/kk1.jpg');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        height: 100vh;
-        }
-        .main-info { 
-            background-color: rgba(255, 255, 255, 0.8); /* white with some transparency */
-            padding: 20px; 
-            border-radius: 10px; 
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
-        }
-        .news-card { border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; }
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
+/* ========== CSS Variables ========== */
+:root {
+  --primary-color: #333;
+  --accent-color: #1a73e8;
+  --site-title-color: #6cfa3a;
+  --hamburger-color: #fff;
+  --nav-link-color: #fff;
+  --nav-background: #333;
+  --nav-hover-color: #1a73e8;
+  --nav-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
 
-        body {
-          font-family: Arial, sans-serif;
-          background-color: #fff;
-        }
+/* ========== Global Reset ========== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-        .wrapper {
-          width: 100%;
-          max-width: 1250px;
-          margin: 0 auto;
-        }
+body {
+  font-family: Arial, sans-serif;
+  background-color: #fff;
+}
 
-        /* Top Nav */
-        .top-nav {
-          margin-top: 100px;
-          display: flex;
-          align-items: center;
-          padding: 0 20px;
-          height: 65px;
-          border-bottom: 1px solid #e0e0e0;
-        }
+/* ========== Responsive Navigation Bar (Powerful Nav) ========== */
+.responsive-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--nav-background);
+  padding: 10px 20px;
+  position: relative;
+  box-shadow: var(--nav-shadow);
+  z-index: 100;
+}
 
-        .logo-box {
-          background-color:greenyellow;
-          height: 100%;
-          padding: 0 12px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
+/* Logo & Site Title */
+.logo-box {
+  display: flex;
+  align-items: center;
+}
 
-        .logo-box img {
-          height: 46px;
-          width: auto;
-        }
+.logo-box img {
+  height: 46px;
+  width: auto;
+}
 
-        .site-title {
-          font-size: 18px;
-          font-weight: bold;
-          color:6cfa3a;
-          margin-left: 15px;
-        }
+.site-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--site-title-color);
+  margin-left: 15px;
+}
 
-        .nav-links {
-          display: flex;
-          gap: 25px;
-          margin-left: 50px;
-          font-weight: bold;
-        }
+/* Navigation Links (Desktop Layout) */
+.nav-links {
+  display: flex;
+  list-style: none;
+}
 
-        .nav-links a {
-          text-decoration: none;
-          color: black;
-          font-size: 16px;
-          position: relative;
-          padding-bottom: 5px;
-          transition: color 0.2s ease-in-out;
-        }
+.nav-links li a {
+  text-decoration: none;
+  color: var(--nav-link-color);
+  font-size: 16px;
+  padding: 10px 15px;
+  transition: all 0.3s ease-in-out;
+}
 
-        .nav-links a:hover {
-          color: #1a73e8;
-        }
+.nav-links li a:hover,
+.nav-links li a:focus {
+  color: var(--nav-hover-color);
+  transform: translateY(-3px);
+}
 
-        .nav-links a:hover::after {
-          content: "";
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          height: 2px;
-          width: 100%;
-          background-color: #1a73e8;
-        }
+/* ================= Hamburger Menu for Mobile ================= */
+/* Hidden checkbox to control toggle */
+#menu-toggle {
+  display: none;
+}
 
-        .nav-links a::after {
-          content: ' ▾';
-          font-size: 12px;
-          display: inline-block;
-        }
+/* Hamburger Icon using span elements */
+.hamburger {
+  display: none;
+  cursor: pointer;
+  width: 30px;
+  height: 25px;
+  position: relative;
+  z-index: 200;
+}
 
-        .nav-links a:last-child::after {
-          content: '';
-        }
-        .page-heading {
-          text-align: center;
-          margin-top: 20px;
-          font-size: 2.5em;
-          color: #333;
-        }
+.hamburger span {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background: var(--hamburger-color);
+  margin: 5px 0;
+  transition: all 0.3s ease;
+}
+
+/* Transform hamburger to "X" when toggled */
+#menu-toggle:checked + .hamburger span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+#menu-toggle:checked + .hamburger span:nth-child(2) {
+  opacity: 0;
+}
+
+#menu-toggle:checked + .hamburger span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* ================= Media Queries for Navigation ================= */
+/* For devices up to 768px (tablets and below) */
+@media (max-width: 768px) {
+  /* Hide the horizontal nav links and use vertical layout */
+  .nav-links {
+    flex-direction: column;
+    position: absolute;
+    top: 65px; /* Adjust based on nav height */
+    left: 0;
+    width: 100%;
+    background-color: var(--nav-background);
+    display: none;
+  }
   
+  .nav-links li {
+    text-align: center;
+    width: 100%;
+    border-bottom: 1px solid #444;
+  }
+
+  /* Show hamburger icon */
+  .hamburger {
+    display: block;
+  }
+  
+  /* When toggle is active, display mobile menu */
+  #menu-toggle:checked + .hamburger + .nav-links {
+    display: flex;
+  }
+}
+
+/* For mobile devices up to 480px */
+@media (max-width: 480px) {
+  .site-title {
+    font-size: 18px;
+  }
+
+  .nav-links li a {
+    font-size: 14px;
+    padding: 8px 10px;
+  }
+}
+
+/* ========== Additional Site Styles ========== */
+
+/* Subnavigation (if needed in addition to the main nav) */
+.subnav {
+  background-color: #fff;
+  padding: 10px 0;
+  text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.subnav a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+  font-size: 16px;
+  transition: color 0.3s;
+  margin: 0 15px;
+}
+
+/* Main Content Container with Background Image */
+.container {
+  padding: 20px;
+  background-image: url('./images/kk1.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
+/* Main Information Box */
+.main-info {
+  background-color: rgba(255, 255, 255, 0.8); /* White with transparency */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* News Card Styling */
+.news-card {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+/* Wrapper to constrain content width */
+.wrapper {
+  width: 100%;
+  max-width: 1250px;
+  margin: 0 auto;
+}
+
+/* Page Heading */
+.page-heading {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 2.5em;
+  color: #333;
+}
+
+/* Legacy Top Navigation (if needed for alternate layouts) */
+.top-nav {
+  margin-top: 100px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  height: 65px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+
     </style>
 </head>
 <body>
 
 
-<div class="wrapper">
-        <div class="top-nav">
-            <div class="logo-box">
-                <img src="./images/claudia (1).gif" alt="Alliance Logo">
-            </div>
-            <div class="site-title">ALLIANCE</div>
-            <div class="nav-links">
-                <a href="#">All</a>
-                <a href="#">Local news</a>
-                <a href="sport.php">Sports</a>
-                <a href="#">Entertainment</a>
-                <li><a href="#" onclick="showContent(event, 'anounce')">School Announcement</a></li>  
-            </div>
-        </div>
+<nav class="responsive-nav">
+  <div class="logo-box">
+    <img src="./images/logo.png" alt="Site Logo" />
+    <span class="site-title">MySite</span>
+  </div>
+  <!-- Hidden checkbox to toggle menu visibility -->
+  <input type="checkbox" id="menu-toggle" />
+  <!-- Hamburger icon -->
+  <label for="menu-toggle" class="hamburger">&#9776;</label>
+  <!-- Navigation Links -->
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#news">News</a></li>
+    <li><a href="#entertainment">Entertainment</a></li>
+    <li><a href="#sports">Sports</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
 
-        
-        </div>
-    </div>
-
-    <h1 class="page-heading">SPORT</h1>  
+        <h1 class="page-heading">SPORT</h1>  
 
     <div class="subnav">
     <?php foreach ($sections as $section): ?>

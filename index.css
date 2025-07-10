@@ -1,176 +1,1101 @@
-* { padding: 0; margin: 0; box-sizing: border-box; }
-.header { width: 100%; display: flex; height: 9.5em; background-color: #ffffff; }
-.header-right ul { display: flex; margin: 1em; margin-left: 23em; }
-.header-right ul li, .header-right ul li a { 
-    text-decoration: none; 
-    margin: 1em; 
-    list-style-type: none; 
-    padding-top: 1.6em; 
-    font-size: 1.15em; 
-    color: rgb(52, 216, 52); 
-    cursor: pointer;
-}
-.header-right ul li:hover, .header-right ul li a:hover { color: rgb(4, 70, 4); }
-.logo img { width: 70%; height: 7em; margin-left: 2em; padding-top: 1em; }
-
-
-.main-content { 
-    height: auto; 
-    margin-left: 2em; 
-    width: 95%; 
-    background-color: rgba(255, 255, 255, 0.7); 
-    padding: 1em; 
-    display: none; /* hidden initially */
-}
-.announcement { 
-    border: 1px solid #ccc; 
-    margin-bottom: 1em; 
-    padding: 1em; 
-    border-radius: 5px; 
-    background-color: #f9f9f9; 
-}
-.nav { 
-    position: absolute; 
-    top: 50%; 
-    transform: translateY(-50%); 
-    background-color: rgba(12, 238, 42, 0.9); 
-    color: white; 
-    border: none; 
-    font-size: 2em; 
-    border-radius: 2em; 
-    cursor: pointer; 
-    padding: 15px; 
-    z-index: 1000; 
-}
-.left { left: 10px; }
-.right { right: 10px; }
-.the-body{
-    font-family: Arial, sans-serif;
-    background-color: #f0f8ff; /* Light blue background */
-    color: #333;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: 3em;
+/* --- Global Reset & Base Styles --- */
+* {
+    padding: 0;
     margin: 0;
+    box-sizing: border-box;
 }
-.weather-container {
-    background-color: #fff;
-    border-radius: 15px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    width: 80%;
-    max-width: 700px;
-    opacity: 0; /* Initially hidden */
-    visibility: hidden;
-    position: fixed; /* To act like a pop-up */
-    top: 25%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.8); /* Initial smaller scale */
-    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out, transform 0.5s ease-in-out;
-    z-index: 10; /* Ensure it's on top of other content */
+
+body {
+    font-family: Arial, sans-serif;
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh; /* Ensure body takes full viewport height */
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    position: relative; /* For the background overlay positioning context */
+    overflow-x: hidden; /* Prevent horizontal scroll on smaller screens */
+    background-color: #f8f8f8; /* Fallback color for transparent areas */
 }
-.weather-container.show {
-    opacity: 1;
-    visibility: visible;
-    transform: translate(-50%, -50%) scale(1); /* Appear at full scale */
+
+.background-overlay {
+    position: fixed; /* Fixed relative to the viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('./images/background_home.jpg'); /* Use your background image here */
+    background-size: cover; /* Cover the entire viewport */
+    background-position: center;
+    filter: blur(8px) brightness(0.6); /* Apply blur (8px) and darken (60% brightness) */
+    -webkit-filter: blur(8px) brightness(0.6); /* For Safari compatibility */
+    z-index: -1; /* Place it behind all other content */
 }
-.current-weather {
+
+.wrapper {
+    width: 100%;
+    max-width: 1250px; /* Standard max-width for content */
+    margin: 0 auto;
+    padding: 0 20px; /* Add padding to wrapper for smaller screens */
+}
+
+/* --- Header / Top Navigation Bar (Ensure solid background) --- */
+/* NO CHANGES TO THIS SECTION AS PER REQUEST */
+.top-nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 20px;
-}
-.current-time {
-    color: #777;
-    font-size: 0.9em;
-}
-.report-button {
-    background-color: #e0f2f7; /* Light teal */
-    color: #00796b; /* Teal text */
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.9em;
-    transition: background-color 0.3s ease;
-}
-.report-button:hover {
-    background-color: #b2dfdb;
-}
-.temperature {
-    font-size: 2.5em;
-    font-weight: bold;
-    color: #00796b;
-    display: flex;
-    align-items: center;
-}
-.condition {
-    color: #555;
-    font-size: 1.1em;
-    margin-top: 5px;
-}
-.details {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    gap: 10px;
-    margin-top: 20px;
-    text-align: left;
-}
-.detail-item {
-    font-size: 0.95em;
-    color: #666;
-}
-.detail-label {
-    font-weight: bold;
-    color: #444;
+    padding: 0 20px;
+    height: 65px;
+    border-bottom: 1px solid #e0e0e0;
+    background-color: white; /* Ensure it has a solid background to cover the body image */
+    position: relative;
+    width: 100%;
+    z-index: 100; /* Give it a higher z-index if needed */
 }
 
-/*SLIDER NEWS */
+.logo-container {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.logo-box {
+    background-color: greenyellow;
+    height: 100%;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-box img {
+    height: 46px;
+    width: auto;
+}
+
+.site-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #6cfa3a;
+
+    margin-left: 15px;
+    white-space: nowrap;
+}
+
+.nav-links {
+    display: flex;
+    gap: 25px;
+    font-weight: bold;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
+    position: relative;
+    padding-bottom: 5px;
+    transition: color 0.2s ease-in-out;
+}
+
+.nav-links a:hover {
+    color: #1a73e8;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 0;
+    background-color: #1a73e8;
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+.menu-toggle {
+    display: none;
+    font-size: 2em;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #333;
+    z-index: 1001;
+    padding: 5px 10px;
+}
+/* --- END Header / Top Navigation Bar --- */
+
+
+/* --- Slider Section --- */
 .slider-container {
     position: relative;
-    width: 90%;
-    max-width: 1500px;
-    margin-top: 1px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 2em auto;
     overflow: hidden;
-    border: 2px solid #000;
+    border-radius: 12px; /* Slightly larger border-radius for modern look */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); /* More prominent shadow */
+    background-color: rgba(255, 255, 255, 0.98); /* Almost opaque white background */
+    backdrop-filter: blur(5px); /* Add a subtle blur effect to the background if any */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle light border */
 }
 
 .slider {
     display: flex;
-    transition: transform 0.5s ease-in-out;
+    transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1); /* Smoother animation curve */
+    width: 300%; /* Keep as is for 3 slides */
 }
 
 .slide {
-    min-width: 100%;
-    text-align: center;
-    padding: 20px;
-    background: #333;
-    color: white;
+    flex: 1 0 100%;
+    position: relative; /* For slide content overlay */
 }
 
 .slide img {
     width: 100%;
-    max-height: 350px;
-    object-fit: cover;
-    border-radius: 5px;
+    height: 400px; /* Fixed height for consistency */
+    object-fit: cover; /* Ensures image covers the area, cropping if necessary */
+    display: block;
 }
 
-button {
+.slide-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0)); /* Gradient overlay */
+    color: white;
+    padding: 20px;
+    text-align: left;
+    transform: translateY(0%); /* Start visible */
+    opacity: 1; /* Start fully opaque */
+    transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+}
+
+/* Hide content on hover for a subtle effect, or keep visible */
+.slide:hover .slide-content {
+    transform: translateY(0); /* Keep visible, or adjust for an effect */
+    opacity: 1;
+}
+
+.slide-content h3 {
+    margin-bottom: 10px;
+    font-size: 1.8em;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+
+.slide-content p {
+    font-size: 1.1em;
+    margin-bottom: 15px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.slide-content a {
+    display: inline-block;
+    background-color: #6cfa3a;
+    color: #333;
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.slide-content a:hover {
+    background-color: #1a73e8;
+    color: white;
+}
+
+
+.nav {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.5);
+    background-color: rgba(12, 238, 42, 0.8); /* Slightly less opaque for better integration */
     color: white;
     border: none;
-    padding: 10px;
+    font-size: 2em;
+    border-radius: 50%;
+    width: 55px; /* Slightly larger buttons */
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
+    padding: 0;
+    z-index: 1000;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Add transform transition */
 }
 
-.prev {
-    left: 10px;
+.nav:hover {
+    background-color: rgba(4, 70, 4, 0.95); /* Darker on hover */
+    transform: translateY(-50%) scale(1.05); /* Slight scale effect */
 }
 
-.next {
-    right: 10px;
+.left { left: 15px; } /* Increased distance from edge */
+.right { right: 15px; } /* Increased distance from edge */
+
+
+/* Dots for slider navigation */
+.slider-dots {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 1001;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    border: 2px solid rgba(0,0,0,0.2);
+}
+
+.dot.active {
+    background-color: #6cfa3a;
+    transform: scale(1.2);
+    border-color: #6cfa3a;
+}
+
+.dot:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+    transform: scale(1.1);
+}
+
+/* --- Main Content Sections (General Styling) --- */
+.extra-content,
+.main-content,
+.the-body {
+    background-color: rgba(255, 255, 255, 0.95); /* Slightly more opaque */
+    margin-top: 30px; /* More space from previous section */
+    padding: 30px; /* Increased padding for better content spacing */
+    border-radius: 12px; /* Consistent border-radius */
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1); /* Slightly deeper shadow */
+    max-width: 1250px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle light border */
+    animation: fadeInScale 0.8s ease-out forwards; /* Fade in and slight scale */
+    opacity: 0; /* Hidden initially for animation */
+    transform: scale(0.98); /* Slightly scaled down initially */
+}
+
+/* Delay animation for subsequent sections */
+.main-content { animation-delay: 0.2s; }
+.the-body { animation-delay: 0.4s; }
+
+
+@keyframes fadeInScale {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Welcome Section (Extra Content) */
+.extra-content {
+    text-align: center;
+    padding: 40px; /* Increased padding */
+    margin-bottom: 25px;
+}
+
+.extra-content h2 {
+    color: #008a12;
+    margin-bottom: 15px;
+    font-size: 2.5em; /* Larger heading */
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+}
+
+.extra-content p {
+    font-size: 1.2em; /* Larger text */
+    color: #555;
+    max-width: 800px; /* Limit paragraph width for readability */
+    margin: 0 auto;
+}
+
+/* Announcements Specific */
+.announcement {
+    border-bottom: 1px dashed #ddd; /* Lighter dashed line */
+    padding-bottom: 20px; /* More padding */
+    margin-bottom: 20px; /* More margin */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add hover effects */
+}
+
+.announcement:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.announcement:hover {
+    transform: translateY(-5px); /* Lift effect */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1); /* Subtle shadow on hover */
+}
+
+.announcement h3 {
+    color: #014930;
+    margin-bottom: 8px;
+    font-size: 1.4em; /* Slightly larger title */
+}
+
+.announcement p {
+    font-size: 1.05em; /* Slightly larger text */
+    margin-bottom: 10px;
+}
+
+.announcement small {
+    display: block;
+    margin-top: 12px;
+    color: #888; /* Slightly darker date color */
+    font-size: 0.9em;
+}
+
+.announcement img, .announcement video {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-top: 15px; /* More space above media */
+    border-radius: 8px; /* Larger border-radius for media */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15); /* Shadow for media */
+}
+
+
+/* --- Weather Container (General styles from previous updates) --- */
+.weather-container {
+    background-color: rgba(224, 242, 247, 0.98); /* Almost opaque */
+    border-radius: 12px; /* Consistent border-radius */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Deeper shadow */
+    padding: 30px; /* Increased padding */
+    width: 100%;
+    max-width: 750px; /* Slightly wider */
+    margin: 30px auto; /* More margin */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    border: 1px solid rgba(224, 242, 247, 0.5); /* Subtle light border */
+    animation: slideInUp 0.8s ease-out forwards; /* Animation for weather container */
+    opacity: 0; /* Hidden initially for animation */
+    transform: translateY(20px);
+}
+
+/* Weather animations */
+@keyframes slideInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.current-weather {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px; /* More space */
+    width: 100%;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+}
+
+.current-time {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #00ffa6;
+    flex-grow: 1; /* Allow time to take available space */
+    text-align: left;
+}
+
+.report-button {
+    background-color: #b509c5;
+    color: white;
+    border: none;
+    padding: 10px 18px; /* Larger button */
+    border-radius: 25px; /* Pill shape */
+    cursor: pointer;
+    font-size: 0.95em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.report-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px); /* Lift effect */
+}
+
+.temperature {
+    font-size: 3em; /* Larger temperature */
+    font-weight: bold;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.temperature img {
+    width: 50px; /* Larger icon */
+    height: 50px;
+    margin-right: 15px;
+    animation: spin 60s linear infinite; /* Subtle continuous spin for weather icon */
+}
+
+.condition {
+    text-align: center;
+    font-size: 1.3em; /* Larger condition text */
+    color: #555;
+    margin-bottom: 25px;
+    width: 100%;
+}
+
+.details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Larger min-width for details */
+    gap: 15px; /* More gap */
+    width: 100%;
+}
+
+.detail-item {
+    background-color: #f0f8ff;
+    padding: 12px; /* More padding */
+    border-radius: 8px; /* Larger border-radius */
+    text-align: center;
+    font-size: 0.95em;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); /* Subtle inset shadow */
+    transition: background-color 0.3s ease;
+}
+
+.detail-item:hover {
+    background-color: #e0f0ff; /* Lighten on hover */
+}
+
+.detail-label {
+    font-weight: bold;
+    color: #0056b3;
+    display: block;
+    margin-bottom: 5px; /* More space */
+    font-size: 1.05em;
+}
+
+/* --- Footer Styles (Ensure solid background) --- */
+/* NO CHANGES TO THIS SECTION AS PER REQUEST */
+.site-footer {
+    background-color: #222; /* Ensure it has a solid background to cover the body image */
+    color: #f4f4f4;
+    padding: 40px 0 0;
+    font-size: 0.95em;
+    line-height: 1.6;
+    margin-top: 40px;
+    z-index: 100; /* Give it a higher z-index if needed */
+}
+
+.site-footer a {
+    color: #6cfa3a;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.site-footer a:hover {
+    color: #1a73e8;
+    text-decoration: underline;
+}
+
+.footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 30px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #444;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 220px;
+    padding-right: 20px;
+}
+
+.footer-section h3 {
+    color: #fff;
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 5px;
+}
+
+.footer-section h3::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50px;
+    height: 3px;
+    background-color: #6cfa3a;
+}
+
+/* About Section */
+.footer-about .footer-logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.footer-about .footer-logo img {
+    height: 40px;
+    width: auto;
+    margin-right: 10px;
+}
+
+.footer-about .footer-logo .site-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #6cfa3a;
+}
+
+.footer-about .tagline {
+    font-style: italic;
+    margin-bottom: 15px;
+    color: #bbb;
+}
+
+.footer-about .description {
+    color: #ccc;
+    margin-bottom: 20px;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.social-links a i{
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.social-links a:hover img {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+/* Links and Categories Sections */
+.footer-links ul,
+.footer-categories ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links ul li,
+.footer-categories ul li {
+    margin-bottom: 10px;
+}
+
+.footer-links ul li:last-child,
+.footer-categories ul li:last-child {
+    margin-bottom: 0;
+}
+
+/* Contact Section */
+.footer-contact p {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.footer-contact p i {
+    font-size: 1.1em;
+    margin-right: 10px;
+    color: #6cfa3a;
+}
+
+.newsletter-signup {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #444;
+}
+
+.newsletter-signup h4 {
+    color: #fff;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+}
+
+.newsletter-signup p {
+    color: #bbb;
+    margin-bottom: 15px;
+}
+
+.newsletter-signup form {
+    display: flex;
+    gap: 10px;
+}
+
+.newsletter-signup input[type="email"] {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #666;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    font-size: 0.9em;
+}
+
+.newsletter-signup input[type="email"]::placeholder {
+    color: #aaa;
+}
+
+.newsletter-signup button {
+    padding: 10px 15px;
+    background-color: #6cfa3a;
+    color: #222;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.newsletter-signup button:hover {
+    background-color: #1a73e8;
+    color: #fff;
+}
+
+/* Footer Bottom (Copyright) */
+.footer-bottom {
+    background-color: #1a1a1a;
+    padding: 20px 0;
+    text-align: center;
+    font-size: 0.85em;
+    color: #bbb;
+}
+
+.footer-bottom .wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.footer-bottom p {
+    margin: 0;
+}
+
+.footer-bottom a {
+    color: #bbb;
+}
+/* --- END Footer Styles --- */
+
+
+/* --- Responsive Adjustments (Media Queries) --- */
+/* For screens smaller than 992px (e.g., tablets) */
+@media (max-width: 992px) {
+    /* Header - NO CHANGES */
+    .nav-links {
+        gap: 15px;
+        font-size: 0.95em;
+    }
+    .site-title {
+        font-size: 16px;
+    }
+    .logo-box img {
+        height: 40px;
+    }
+
+    /* Slider */
+    .slider-container {
+        margin: 1.5em auto;
+    }
+    .slide img {
+        height: 350px; /* Adjust height for tablets */
+    }
+    .slide-content h3 {
+        font-size: 1.6em;
+    }
+    .slide-content p {
+        font-size: 1em;
+    }
+    .nav {
+        width: 45px;
+        height: 45px;
+        font-size: 1.8em;
+    }
+    .dot {
+        width: 10px;
+        height: 10px;
+    }
+
+    /* Main Content Sections */
+    .extra-content,
+    .main-content,
+    .the-body {
+        padding: 25px; /* Adjust padding for content areas */
+    }
+    .extra-content h2 {
+        font-size: 2.2em;
+    }
+    .extra-content p {
+        font-size: 1.1em;
+    }
+
+    /* Announcements */
+    .announcement h3 {
+        font-size: 1.3em;
+    }
+
+    /* Weather */
+    .weather-container {
+        padding: 25px;
+        margin: 25px auto;
+    }
+    .temperature {
+        font-size: 2.5em;
+    }
+    .temperature img {
+        width: 40px;
+        height: 40px;
+    }
+    .condition {
+        font-size: 1.1em;
+    }
+    .details {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 12px;
+    }
+    .detail-item {
+        padding: 10px;
+        font-size: 0.9em;
+    }
+}
+
+/* For screens smaller than 768px (e.g., most phones) */
+@media (max-width: 768px) {
+    /* Header - NO CHANGES (retained from your original code) */
+    .top-nav {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        height: 60px;
+        padding: 0 15px;
+    }
+    .logo-box {
+        height: 100%;
+        padding: 0 10px;
+    }
+    .logo-box img {
+        height: 38px;
+    }
+    .site-title {
+        font-size: 15px;
+        margin-left: 10px;
+    }
+    .nav-links {
+        /* Initial state: hidden off-screen or collapsed */
+        display: flex; /* Keep flex for column direction */
+        flex-direction: column;
+        width: 100%;
+        position: absolute;
+        top: 60px; /* Position directly below the top-nav (adjust if your top-nav height differs) */
+        left: 0;
+        background-color: white; /* Solid background for the menu when open */
+        box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        padding: 0; /* No padding when collapsed */
+        z-index: 999;
+        max-height: 0; /* Initially collapse the menu */
+        overflow: hidden; /* Hide overflowing content */
+        transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out; /* Animate height and padding */
+    }
+    .nav-links.active {
+        max-height: 300px; /* A value large enough to show all your links when active */
+        padding: 10px 0; /* Restore padding when active */
+    }
+    .menu-toggle {
+        display: block; /* Show hamburger icon on small screens */
+        margin-left: auto; /* Pushes toggle to the right */
+        /* ... other existing styles for menu-toggle ... */
+    }
+    .nav-links a {
+        padding: 12px 20px;
+        border-bottom: 1px solid #f0f0f0;
+        width: 100%;
+        text-align: left;
+        font-size: 1em;
+    }
+    .nav-links a:last-child {
+        border-bottom: none;
+    }
+    .nav-links a::after {
+        content: '';
+        width: 0 !important;
+    }
+    .menu-toggle {
+        display: block;
+        margin-left: auto;
+        font-size: 1.8em;
+    }
+
+    /* Slider */
+    .slider-container {
+        margin: 1em auto;
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.95); /* Keep semi-transparent for mobile */
+    }
+    .slide img {
+        height: 250px; /* Further reduce height for phones */
+    }
+    .slide-content {
+        padding: 15px;
+    }
+    .slide-content h3 {
+        font-size: 1.4em;
+    }
+    .slide-content p {
+        font-size: 0.9em;
+    }
+    .slide-content a {
+        padding: 6px 12px;
+        font-size: 0.9em;
+    }
+    .nav {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5em;
+    }
+    .left { left: 5px; }
+    .right { right: 5px; }
+    .slider-dots {
+        bottom: 5px;
+        gap: 6px;
+    }
+    .dot {
+        width: 10px;
+        height: 10px;
+    }
+
+    /* Main Content Sections */
+    .extra-content {
+        padding: 20px;
+        font-size: 0.95em;
+    }
+    .extra-content h2 {
+        font-size: 1.8em;
+    }
+    .extra-content p {
+        font-size: 1em;
+    }
+    .main-content, .the-body {
+        padding: 15px;
+    }
+
+    /* Announcements */
+    .announcement h3 {
+        font-size: 1.1em;
+    }
+    .announcement p {
+        font-size: 1em;
+    }
+
+    /* Weather */
+    .weather-container {
+        padding: 15px;
+        margin: 15px auto;
+    }
+    .current-time {
+        font-size: 1em;
+        text-align: center; /* Center on smaller screens */
+        width: 100%; /* Take full width */
+        margin-bottom: 10px;
+    }
+    .report-button {
+        font-size: 0.9em;
+        padding: 8px 15px;
+        margin: 0 auto; /* Center button if it wraps */
+    }
+    .temperature {
+        font-size: 2em;
+        margin-bottom: 10px;
+    }
+    .temperature img {
+        width: 30px;
+        height: 30px;
+    }
+    .condition {
+        font-size: 1em;
+        margin-bottom: 15px;
+    }
+    .details {
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        gap: 8px;
+    }
+    .detail-item {
+        padding: 8px;
+        font-size: 0.85em;
+    }
+
+    /* Footer responsiveness (already covered, and no changes requested) */
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .footer-section {
+        min-width: unset;
+        width: 100%;
+        padding-right: 0;
+    }
+    .footer-section h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    .footer-about .footer-logo {
+        justify-content: center;
+    }
+    .social-links {
+        justify-content: center;
+    }
+    .newsletter-signup form {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .newsletter-signup button {
+        width: 100%;
+    }
+    .footer-bottom .wrapper {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
+/* For very small screens (e.g., iPhone 5/SE, smaller Androids) */
+@media (max-width: 480px) {
+    /* Header - NO CHANGES */
+    .top-nav {
+        height: 55px;
+    }
+    .menu-toggle {
+        top: 15px;
+        right: 15px;
+        font-size: 1.8em;
+    }
+    .logo-box img {
+        height: 35px;
+    }
+    .site-title {
+        font-size: 14px;
+        margin-left: 8px;
+    }
+
+    /* Slider */
+    .slider-container {
+        margin: 0.5em auto;
+    }
+    .slide img {
+        height: 200px; /* Even smaller height for tiny screens */
+    }
+    .slide-content {
+        padding: 10px;
+    }
+    .slide-content h3 {
+        font-size: 1.2em;
+    }
+    .slide-content p {
+        font-size: 0.85em;
+    }
+    .slide-content a {
+        padding: 5px 10px;
+        font-size: 0.8em;
+    }
+    .nav {
+        width: 35px;
+        height: 35px;
+        font-size: 1.2em;
+    }
+
+    /* Main Content Sections */
+    .extra-content {
+        padding: 15px;
+        font-size: 0.9em;
+    }
+    .extra-content h2 {
+        font-size: 1.5em;
+    }
+    .extra-content p {
+        font-size: 0.95em;
+    }
+    .main-content, .the-body {
+        padding: 10px;
+    }
+
+    /* Announcements */
+    .announcement h3 {
+        font-size: 1em;
+    }
+
+    /* Weather */
+    .weather-container {
+        padding: 10px;
+        margin: 10px auto;
+    }
+    .temperature {
+        font-size: 1.8em;
+    }
+    .temperature img {
+        width: 25px;
+        height: 25px;
+    }
+    .condition {
+        font-size: 0.9em;
+    }
+    .detail-item {
+        font-size: 0.75em;
+    }
+
+    /* Footer - NO CHANGES */
+    .site-footer {
+        padding: 20px 0 0;
+        font-size: 0.8em;
+    }
+    .footer-section {
+        padding: 0 10px;
+    }
+    .footer-section h3 {
+        font-size: 1.1em;
+    }
+    .footer-about .footer-logo img {
+        height: 35px;
+    }
+    .footer-about .footer-logo .site-title {
+        font-size: 1.2em;
+    }
+    .social-links a img {
+        width: 28px;
+        height: 28px;
+    }
+    .newsletter-signup input[type="email"],
+    .newsletter-signup button {
+        font-size: 0.8em;
+        padding: 8px;
+    }
+    .footer-bottom {
+        padding: 15px 0;
+        font-size: 0.75em;
+    }
 }

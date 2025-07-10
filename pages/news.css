@@ -1,0 +1,620 @@
+    body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5; /* Light grey background */
+            color: #333; /* Darker text color for better readability */
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .wrapper {
+            width: 100%;
+            max-width: 1250px; /* Increased max-width for the main content wrapper */
+            margin: 0 auto;
+            padding: 0 20px;
+            flex-grow: 1;
+            position: relative;
+            z-index: 0;
+        }
+
+        /* Top Navigation Bar */
+        .top-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            height: 75px; /* Slightly taller nav */
+            border-bottom: 1px solid #e0e0e0;
+            background-color: #ffffff; /* White background */
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* More prominent shadow */
+        }
+/* Mobile menu toggle */
+.menu-toggle {
+    display: none; /* Hidden on desktop by default */
+    font-size: 2.5em; 
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #333;
+    z-index: 1001; /* Ensure it's above other elements */
+    padding: 8px 15px;
+    transition: transform 0.3s ease;
+}
+.menu-toggle:hover {
+    transform: rotate(90deg);
+}
+
+/* Navigation Links (Desktop state and initial mobile hidden state) */
+.nav-links {
+    display: flex; /* Default for desktop */
+    gap: 30px;
+    font-weight: bold;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    /* These properties are for the mobile hidden state */
+    /* They are overridden by media query for mobile to manage the toggle */
+}
+
+
+        .top-nav .wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+            padding: 0;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+
+        .logo-box {
+            background-color: #6cfa3a; /* Vibrant green */
+            height: 100%;
+            padding: 0 15px; /* More padding */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-box img {
+            height: 55px; /* Larger logo */
+            width: auto;
+        }
+
+        .site-title {
+            font-size: 22px; /* Larger font size */
+            font-weight: bold;
+            color: #4a4a4a; /* Darker grey for title */
+            margin-left: 20px; /* More margin */
+            white-space: nowrap;
+            letter-spacing: 1.5px; /* Spaced out letters */
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #333; /* Darker link color */
+            font-size: 18px; /* Larger link font size */
+            position: relative;
+            padding-bottom: 8px; /* More space for underline effect */
+            transition: color 0.3s ease-in-out;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            color: #1a73e8; /* Blue on hover */
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px; /* Thicker underline */
+            width: 0;
+            background-color: #1a73e8;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+      
+
+
+        /* Article Page Specific Styles */
+       .article-container {
+    width: 90%; /* Start by taking up a large percentage of available width */
+    max-width: 1100px; /* But don't exceed this maximum width */
+    margin: 60px auto 40px;
+    background: #fff;
+    padding: 40px 50px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    border-radius: 15px;
+}
+        .article-header {
+            text-align: center;
+            margin-bottom: 40px; /* More space below header */
+        }
+
+        .article-header h1 {
+            font-size: 3.8em; /* Much larger title */
+            color: #222; /* Very dark title */
+            margin-bottom: 20px;
+            line-height: 1.2;
+            font-family: 'Playfair Display', serif; /* A more elegant font if available, or fallback to Georgia */
+            font-weight: 700;
+        }
+
+        .article-meta {
+            font-size: 1em; /* Slightly larger meta info */
+            color: #666; /* Clearer grey */
+            margin-bottom: 30px;
+        }
+
+        .article-meta .category-tag, .article-meta .section-tag {
+            background-color: #e8f0fe; /* Light blue background for tags */
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            color: #1a73e8; /* Blue text for tags */
+            white-space: nowrap;
+            font-size: 0.9em;
+            text-transform: uppercase;
+        }
+
+        .article-media-figure {
+            margin: 0 0 40px 0; /* More margin below media */
+            text-align: center;
+        }
+
+        .article-media-figure img,
+        .article-media-figure video {
+            width: 40%;
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px; /* More rounded media corners */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); /* Subtle shadow on media */
+            display: block;
+            margin: 0 auto;
+        }
+
+        .article-media-figure figcaption {
+            font-size: 0.95em; /* Slightly larger caption */
+            color: #666;
+            margin-top: 15px; /* More space above caption */
+            line-height: 1.5;
+            font-style: italic;
+        }
+
+        .article-content p {
+            font-size: 1.2em; /* Larger paragraph text */
+            margin-bottom: 1.8em; /* More space between paragraphs */
+            text-align: justify;
+            color: #333; /* Darker text for content */
+            line-height: 1.8; /* Increased line height for readability */
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 40px; /* More margin above link */
+            text-decoration: none;
+            color: #1a73e8;
+            font-weight: bold;
+            font-size: 1.2em; /* Larger back link */
+            transition: color 0.3s ease, transform 0.3s ease;
+            padding: 8px 15px; /* Padding for click area */
+            border-radius: 8px;
+            background-color: #e8f0fe; /* Light background for the button */
+        }
+
+        .back-link i {
+            margin-right: 10px;
+            font-size: 1.3em;
+        }
+
+        .back-link:hover {
+            color: #0d47a1; /* Darker blue on hover */
+            background-color: #d1e3ff; /* Slightly darker background on hover */
+            transform: translateX(-8px); /* More pronounced slide effect */
+        }
+
+
+        /* Footer Styles - Integrated */
+        .site-footer {
+            background-color: #222; /* Darker footer background */
+            color: #f4f4f4;
+            padding: 50px 0 0; /* More padding top */
+            font-size: 1em; /* Slightly larger footer text */
+            line-height: 1.6;
+            margin-top: auto; /* Pushes footer to the bottom */
+            z-index: 10;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.1); /* Shadow at the top of the footer */
+        }
+
+        .site-footer a {
+            color: #6cfa3a; /* Vibrant green for footer links */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .site-footer a:hover {
+            color: #1a73e8; /* Blue on hover */
+            text-decoration: underline;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px; /* More space between columns */
+            padding-bottom: 40px; /* More padding bottom */
+            border-bottom: 1px solid #444;
+            max-width: 1250px;
+            margin: 0 auto;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 250px; /* Ensure minimum width for columns */
+            padding-right: 20px;
+        }
+
+        .footer-section h3 {
+            color: #fff;
+            font-size: 1.5em; /* Larger footer headings */
+            margin-bottom: 25px; /* More margin */
+            position: relative;
+            padding-bottom: 8px; /* More space for underline */
+            letter-spacing: 1px;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 60px; /* Longer underline */
+            height: 4px; /* Thicker underline */
+            background-color: #6cfa3a;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 12px; /* More space between list items */
+        }
+
+        .footer-section ul li a {
+            display: block;
+            padding: 6px 0;
+            color: #ccc;
+        }
+
+        .footer-section ul li a:hover {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .social-icons a {
+            display: inline-block;
+            margin-right: 20px; /* More space between icons */
+            font-size: 2.2em; /* Larger social icons */
+            color: #6cfa3a;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: #1a73e8;
+            transform: translateY(-5px); /* More pronounced lift effect */
+        }
+
+        .instagram-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px; /* More gap */
+            font-size: 20px; /* Larger text */
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s ease-in-out;
+            margin-top: 25px;
+        }
+
+        .instagram-link img {
+            width: 38px; /* Larger icon */
+            height: 38px;
+            border-radius: 10px; /* More rounded */
+        }
+
+        .instagram-link:hover {
+            transform: scale(1.08); /* More prominent scale */
+            color: #6cfa3a;
+        }
+
+        .team-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px; /* More space between team members */
+            margin-top: 25px;
+        }
+
+        .member {
+            background-color: #333;
+            color: white;
+            padding: 20px; /* More padding */
+            border-radius: 10px; /* More rounded */
+            width: 90%;
+            max-width: 200px; /* Slightly larger max width */
+            text-align: center;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2); /* Stronger shadow */
+        }
+
+        .member img {
+            width: 90px; /* Larger image */
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 12px;
+            border: 4px solid #6cfa3a; /* Thicker border */
+        }
+
+        .member:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+        }
+
+        .alliance {
+            text-align: center;
+            margin-top: 40px; /* More margin */
+        }
+
+        .alliance h3 {
+            color: #fff;
+            margin-bottom: 20px;
+            font-size: 1.3em; /* Larger heading */
+        }
+
+        .alliance img {
+            width: 100%;
+            max-width: 180px; /* Larger image */
+            height: auto;
+            margin-bottom: 25px;
+        }
+
+        .footer-bottom {
+            background-color: #1a1a1a; /* Even darker bottom part */
+            padding: 25px 0;
+            text-align: center;
+            font-size: 0.9em; /* Slightly larger text */
+            color: #bbb;
+        }
+
+        .footer-bottom .wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 0 20px;
+        }
+
+        .footer-bottom p {
+            margin: 0;
+        }
+
+        .footer-bottom a {
+            color: #bbb;
+        }
+
+        /* --- Responsive Adjustments (Adjusted for "huge design") --- */
+
+        /* For screens smaller than 1200px (e.g., larger tablets/smaller desktops) */
+        @media (max-width: 1200px) {
+            .article-container {
+                max-width: 90%; /* Allow it to take more width */
+            }
+        }
+
+        /* For screens smaller than 992px (e.g., tablets) */
+        @media (max-width: 992px) {
+            .nav-links {
+                gap: 20px;
+                font-size: 17px;
+            }
+            .site-title {
+                font-size: 20px;
+            }
+            .logo-box img {
+                height: 50px;
+            }
+            .article-header h1 {
+                font-size: 3em;
+            }
+            .article-content p {
+                font-size: 1.1em;
+            }
+            .footer-section {
+                min-width: 220px;
+            }
+        }
+
+        /* For screens smaller than 768px (e.g., most phones) */
+        @media (max-width: 768px) {
+            .top-nav {
+                height: 70px;
+                padding: 0 15px;
+            }
+            .logo-box img {
+                height: 45px;
+            }
+            .site-title {
+                font-size: 18px;
+                margin-left: 15px;
+            }
+ .menu-toggle {
+        display: block; 
+        margin-left: auto; /* Pushes it to the right */
+    }
+
+    /* Hide the navigation links initially on mobile */
+    .nav-links {
+        display: flex; /* We want flex for the column layout */
+        flex-direction: column; /* Stack links vertically */
+        width: 100%;
+        position: absolute; /* Position relative to .top-nav or body */
+        top: 70px; /* Adjust this based on your top-nav height */
+        left: 0;
+        background-color: #ffffff; /* Background for the dropdown */
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1); /* Shadow for dropdown */
+        padding: 0; /* No padding when collapsed */
+        z-index: 99; /* Below the toggle but above main content */
+
+        /* Key for the collapse/expand animation */
+        max-height: 0; /* Start collapsed */
+        overflow: hidden; /* Hide content that exceeds max-height */
+        transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out; /* Smooth animation */
+    }
+
+    /* State when menu is active (expanded) */
+    .nav-links.active {
+        max-height: 350px; /* A value large enough to contain all links (adjust if more links) */
+        padding: 15px 0; /* Add vertical padding when expanded */
+    }
+
+    /* Styling for individual links within the mobile menu */
+    .nav-links li {
+        width: 100%; /* Each link takes full width */
+    }
+
+    .nav-links a {
+        padding: 15px 25px; /* Larger clickable area */
+        border-bottom: 1px solid #f5f5f5; /* Lighter border between links */
+        width: 100%;
+        text-align: left;
+        font-size: 1.1em;
+    }
+    .nav-links a:last-child {
+        border-bottom: none; /* No border for the last link */
+    }
+    .nav-links a::after {
+        width: 0 !important; /* Remove desktop underline effect for mobile menu */
+    }
+}
+
+/* For very small screens (e.g., iPhone 5/SE, smaller Androids) */
+@media (max-width: 480px) {
+    .top-nav {
+        height: 65px;
+    }
+    .nav-links {
+        top: 65px; /* Adjust based on new top-nav height */
+    }
+            .article-container {
+                margin: 40px 15px;
+                padding: 30px;
+            }
+            .article-header h1 {
+                font-size: 2.5em;
+            }
+            .article-content p {
+                font-size: 1.05em;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 30px;
+            }
+            .footer-section {
+                min-width: unset;
+                width: 100%;
+                padding-right: 0;
+            }
+            .footer-section h3::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            .team-section {
+                flex-direction: column;
+                align-items: center;
+            }
+            .member {
+                width: 80%;
+                max-width: 280px;
+            }
+            .instagram-link {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .footer-bottom .wrapper {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        /* For very small screens (e.g., iPhone 5/SE, smaller Androids) */
+        @media (max-width: 480px) {
+            .top-nav {
+                height: 65px;
+                padding: 0 10px;
+            }
+            .logo-box img {
+                height: 40px;
+            }
+            .site-title {
+                font-size: 16px;
+                margin-left: 10px;
+            }
+            .menu-toggle {
+                font-size: 1.8em;
+            }
+            .nav-links {
+                top: 65px;
+            }
+
+            .article-container {
+                margin: 25px 10px;
+                padding: 20px;
+            }
+            .article-header h1 {
+                font-size: 2em;
+            }
+            .article-meta {
+                font-size: 0.85em;
+            }
+            .article-content p {
+                font-size: 1em;
+            }
+
+            .site-footer {
+                padding: 30px 0 0;
+                font-size: 0.9em;
+            }
+            .member img {
+                width: 80px;
+                height: 80px;
+            }
+        }

@@ -1,0 +1,985 @@
+        /* --- General Layout and Reset --- */
+        /* These should ideally be in a global stylesheet like style.css, but included here for completeness */
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif; /* Modern, readable font */
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow-x: hidden;
+            background-color: #cococo; /* Light grey background */
+        }
+
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('../images/background_home.jpg'); /* Your specific background image */
+            background-size: cover;
+            background-position: center;
+            filter: blur(8px) brightness(0.6);
+            -webkit-filter: blur(8px) brightness(0.6);
+            z-index: -1;
+        }
+
+        .wrapper {
+            width: 100%;
+            max-width: 1300px; /* Slightly wider wrapper */
+            margin: 0 auto;
+            padding: 0 25px; /* More padding */
+            flex-grow: 1;
+            position: relative;
+            z-index: 0;
+            padding-top: 20px; /* Space below sticky header */
+        }
+
+        /* --- HEADER / TOP NAVIGATION BAR (Consistent with Home & Sport) --- */
+        .top-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 25px; /* More padding */
+            height: 70px; /* Slightly taller */
+            border-bottom: none; /* Remove harsh border */
+            background-color: white;
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Stronger, softer shadow */
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+
+        .logo-box {
+            background-color: #6cfa3a; /* Your brand green */
+            height: 100%;
+            padding: 0 15px; /* More padding */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom-right-radius: 10px; /* Subtle curve */
+        }
+
+        .logo-box img {
+            height: 50px; /* Slightly larger logo */
+            width: auto;
+        }
+
+        .site-title {
+            font-size: 22px; /* Larger title */
+            font-weight: 700; /* Bolder */
+            color: #333; /* Darker for better contrast */
+            margin-left: 20px; /* More space */
+            white-space: nowrap;
+            letter-spacing: 1px; /* Spaced out */
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 35px; /* More space between links */
+            font-weight: 600; /* Slightly less bold than before */
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #555; /* Softer link color */
+            font-size: 17px; /* Slightly larger */
+            position: relative;
+            padding-bottom: 7px; /* More space for underline */
+            transition: color 0.3s ease-in-out;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            color: #e91e63; /* Vibrant hover color */
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px; /* Thicker underline */
+            width: 0;
+            background-color: #e91e63; /* Matching hover color */
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Active link style */
+        .nav-links a[href="./entertain.php"]::after {
+            width: 100%;
+            background-color: #e91e63; /* Always show active for entertainment */
+        }
+        .nav-links a[href="./entertain.php"] {
+            color: #e91e63; /* Active link color */
+        }
+
+
+        .menu-toggle {
+            display: none; /* Hidden by default for larger screens */
+            font-size: 2.5em; /* Larger toggle */
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #333;
+            z-index: 1001;
+            padding: 5px 10px;
+            transition: transform 0.3s ease;
+        }
+        .menu-toggle:hover {
+            transform: rotate(90deg); /* Rotate on hover */
+        }
+
+
+        /* --- Entertainment Page Specific Styles (modern look) --- */
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px; /* More space below header */
+            padding: 40px 25px; /* More padding */
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(245, 245, 245, 0.95)); /* Subtle gradient */
+            border-radius: 18px; /* More rounded */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Deeper shadow */
+            font-family: 'Tilt Prism', cursive; 
+            color: #e91e63; /* A vibrant entertainment color */
+            animation: fadeInHeader 1s ease-out;
+            border: 1px solid rgba(255,255,255,0.7); /* Subtle border */
+        }
+        .page-header h1 {
+            font-size: 2.5em; /* Larger heading */
+            margin-bottom: 15px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.15); /* Stronger shadow */
+            color: #3f51b5; /* Primary accent color for heading */
+            letter-spacing: 2px;
+        }
+        .page-header p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.3em; /* Larger text */
+            color: #666; /* Softer text color */
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        @keyframes fadeInHeader {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .main-content-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 50px; /* More space */
+        }
+
+        .main-news {
+            flex: 3; /* Give more space to main news */
+            min-width: 65%; /* Ensure it takes substantial width */
+            background-color: rgba(255, 255, 255, 0.98); /* Near opaque */
+            padding: 35px; /* More padding */
+            border-radius: 18px; /* More rounded */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Deeper shadow */
+            border: 1px solid rgba(255,255,255,0.7);
+        }
+
+        .featured-news {
+            display: flex;
+            flex-direction: column;
+            gap: 25px; /* More gap */
+             height: 130px;
+        }
+        .featured-news .main1 { 
+            width: 100%;
+            height: 330px; /* Increased height */
+            object-fit: cover;
+            border-radius: 15px; /* More rounded */
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15); /* Stronger shadow */
+            transition: transform 0.4s ease-in-out;
+        }
+        .featured-news .main1:hover {
+            transform: scale(1.015); /* More pronounced hover */
+        }
+
+        .featured-content {
+            position: relative; /* For the h2 positioning */
+        }
+
+        .featured-content h2 a {
+            font-size: 1em; /* Larger heading */
+            color: #333; /* Darker color for headings */
+            text-decoration: none;
+            margin-bottom: 15px;
+            display: block; /* Take full width */
+            line-height: 1.2;
+            transition: color 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+        .featured-content h2 a:hover {
+            color: #1ee943; /* Vibrant hover color */
+        }
+
+        .article-meta {
+            font-size: 1em; /* Slightly larger */
+            color: #888;
+            margin-top: -10px; /* Pull it closer to title */
+            margin-bottom: 15px;
+            font-weight: 300;
+        }
+        .featured-content p {
+            font-size: 1em; /* Larger body text */
+            line-height: 1.7; /* More line height for readability */
+            color: #444;
+        }
+        .featured-content p a {
+            color: #3f51b5; /* Blue for 'Read more' */
+            font-weight: 600; /* More bold */
+            text-decoration: underline;
+        }
+        .featured-content p a:hover {
+            color: #1ee9ce; /* Hover color */
+        }
+
+
+        .sidebar {
+            flex: 1.5; /* Give more space to sidebar */
+            min-width: 320px; /* Increased min-width */
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px; /* More padding */
+            border-radius: 18px; /* More rounded */
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            align-self: flex-start; 
+            border: 1px solid rgba(255,255,255,0.7);
+        }
+        .sidebar h2 {
+            font-size: 2em; /* Larger heading */
+            color: #1356ca; /* Matching primary accent */
+            margin-bottom: 30px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid #f8bbd0; /* Thicker underline */
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+        .sidebar-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px; /* More space between items */
+            gap: 20px; /* More gap */
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #e0e0e0; /* Lighter, more subtle separator */
+        }
+        .sidebar-item:last-child {
+            border-bottom: none;
+        }
+        .sidebar-item img {
+            width: 120px; /* Larger image */
+            height: 90px; /* Larger image */
+            object-fit: cover;
+            border-radius: 10px; /* More rounded */
+            flex-shrink: 0; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .sidebar-text a {
+            font-size: 1.2em; /* Larger text */
+            font-weight: 600; 
+            color: #333; /* Darker for better readability */
+            text-decoration: none;
+            line-height: 1.4;
+            display: block; 
+            margin-bottom: 8px;
+            padding: 2px 0;
+            transition: color 0.3s ease;
+        }
+        .sidebar-text a:hover {
+            color: #e91e63;
+        }
+        .sidebar-text p {
+            font-size: 0.95em; /* Slightly larger */
+            color: #777; /* Softer */
+            line-height: 1.5;
+        }
+
+        /* Slider Section */
+        .slider {
+            position: relative;
+            width: 100%;
+            max-width: 1300px;
+            margin: 50px auto; /* More space */
+            overflow: hidden;
+            border-radius: 20px; /* More rounded */
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18); /* Stronger shadow */
+            background-color: #fff;
+            padding: 20px; /* Inner padding */
+            display: flex; 
+            align-items: center; 
+            border: 1px solid rgba(255,255,255,0.8);
+        }
+
+        .slide-item { /* New wrapper for each slide for content */
+            position: relative;
+            width: 100%;
+            flex-shrink: 0;
+            overflow: hidden;
+            display: flex; /* Make it a flex container for image and text */
+            flex-direction: column; /* Stack image and text if needed, or handle overlay */
+            justify-content: flex-end; /* Push content to bottom for overlay */
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            width: 100%; 
+            flex-shrink: 0; 
+        }
+
+        .slides img {
+            width: 100%; 
+            height: 550px; /* Even higher for impact */
+            object-fit: cover;
+            display: block; 
+            border-radius: 15px; /* More rounded */
+            flex-shrink: 0; 
+        }
+
+        /* NEW: Styles for slider text overlay */
+        .slider-caption {
+            position: absolute;
+            bottom: 30px; /* More distance from the bottom */
+            left: 30px; /* More distance from the left */
+            right: 30px; /* More distance from the right */
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4)); /* Gradient overlay */
+            color: white;
+            padding: 25px 30px; /* More padding */
+            border-radius: 12px;
+            max-width: 70%; /* Limit width of caption */
+            box-shadow: 0 6px 20px rgba(0,0,0,0.5); /* Stronger shadow for overlay */
+            backdrop-filter: blur(5px); /* Frosted glass effect */
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .slider-caption h2 {
+            font-size: 3em; /* Larger heading */
+            margin-bottom: 12px;
+            line-height: 1.2;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9); 
+            color: #fff; /* White for heading */
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+
+        .slider-caption p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #e0e0e0; /* Softer white for body text */
+        }
+
+        .slider-caption p a {
+            color: #6cfa3a; /* Link color within caption */
+            text-decoration: none; /* Underline for links */
+            font-weight: 600;
+        }
+
+        .slider-caption p a:hover {
+            color: #e91e63; /* Hover color for links */
+        }
+
+
+        .slider button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.7); /* Darker buttons */
+            color: white;
+            border: none;
+            padding: 18px 15px; /* Larger buttons */
+            cursor: pointer;
+            font-size: 1.8em; /* Larger arrow */
+            border-radius: 50%;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            z-index: 10; 
+        }
+
+        .slider button:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+            transform: translateY(-50%) scale(1.1); /* Slightly enlarge on hover */
+        }
+
+        .slider .prev {
+            left: 20px;
+        }
+
+        .slider .next {
+            right: 20px;
+        }
+
+        /* Image Grid */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Larger min width for grid items */
+            gap: 30px; /* More gap */
+            padding: 35px; /* More padding */
+            margin-top: 50px;
+            border-top: none; /* Removed border top */
+            background-color: rgba(255, 255, 255, 0.98);
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255,255,255,0.7);
+        }
+        .grid-item {
+            background-color: #fff;
+            border-radius: 12px; /* More rounded */
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); /* Stronger shadow */
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .grid-item:hover {
+            transform: translateY(-8px); /* More pronounced lift */
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.18); /* Stronger shadow on hover */
+        }
+        .grid-item img {
+            width: 100%;
+            height: 220px; /* Increased height for grid images */
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        .grid-item:hover img {
+            transform: scale(1.05); /* Zoom in effect on image */
+        }
+        .grid-item a {
+            padding: 20px; /* More padding */
+            display: block;
+            font-size: 1.3em; /* Larger title */
+            font-weight: 600;
+            color: #333; /* Darker for better contrast */
+            text-decoration: none;
+            transition: color 0.3s ease;
+            flex-grow: 1; /* Allow link to take available space */
+            line-height: 1.4;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .grid-item a:hover {
+            color: #e91e63;
+        }
+
+        /* --- Footer Styles (Consistent with Home & Sport) --- */
+        .site-footer {
+            background-color:darkgray ; /* Darker footer */
+            color:darkgray;
+            padding: 50px 0 0; /* More padding */
+            font-size: 0.95em;
+            line-height: 1.7; /* Increased line height */
+            margin-top: 50px;
+            z-index: 10;
+        }
+
+        .site-footer a {
+            color: #6cfa3a;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .site-footer a:hover {
+            color: #1a73e8;
+            text-decoration: underline;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px; /* More gap */
+            padding-bottom: 40px;
+            border-bottom: 1px solid #333; /* Darker border */
+            max-width: 1300px; /* Matching wrapper width */
+            margin: 0 auto;
+            padding-left: 25px;
+            padding-right: 25px;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 250px; /* Adjusted min-width */
+            padding-right: 20px;
+        }
+
+        .footer-section h3 {
+            color: #fff;
+            font-size: 1.4em; /* Larger heading */
+            margin-bottom: 25px; /* More space */
+            position: relative;
+            padding-bottom: 8px; /* More space for underline */
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 60px; /* Wider underline */
+            height: 4px; /* Thicker underline */
+            background-color: #6cfa3a;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 12px; /* More space between list items */
+        }
+
+        .footer-section ul li a {
+            display: block;
+            padding: 5px 0;
+            color: #ccc;
+            font-weight: 300;
+        }
+
+        .footer-section ul li a:hover {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .social-icons a {
+            display: inline-block;
+            margin-right: 18px; /* More space */
+            font-size: 2em; /* Larger icons */
+            color: #6cfa3a;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: #1a73e8;
+            transform: translateY(-5px); /* More lift */
+        }
+
+        .instagram-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px; /* More gap */
+            font-size: 19px; /* Larger text */
+            color: white;
+            text-decoration: none;
+            font-weight: 600; /* Bolder */
+            transition: transform 0.3s ease-in-out;
+            margin-top: 25px;
+        }
+
+        .instagram-link img {
+            width: 36px; /* Larger icon */
+            height: 36px; /* Larger icon */
+            border-radius: 8px;
+        }
+
+        .instagram-link:hover {
+            transform: scale(1.08); /* More pronounced scale */
+            color: #6cfa3a;
+        }
+
+        .team-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px; /* More gap */
+            margin-top: 25px;
+            opacity: 0;
+            transform: translateY(30px); /* More initial translateY */
+            transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out; /* Slower transition */
+        }
+
+        .member {
+            background-color: #2b2b2b; /* Slightly lighter background */
+            color: white;
+            padding: 20px; /* More padding */
+            border-radius: 10px; /* More rounded */
+            width: 95%;
+            max-width: 320px; /* Larger max-width */
+            text-align: center;
+            transition: transform 0.4s ease-in-out, box-shadow 0.4s ease;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3); /* Stronger shadow */
+        }
+
+        .member img {
+            width: 110px; /* Larger image */
+            height: 110px; /* Larger image */
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px; /* More space */
+            border: 4px solid #6cfa3a; /* Thicker border */
+            box-shadow: 0 0 0 5px rgba(108, 250, 58, 0.2); /* Outer glow */
+        }
+
+        .member:hover {
+            transform: scale(1.05); /* More pronounced scale */
+            box-shadow: 0 8px 18px rgba(0,0,0,0.4); /* Stronger hover shadow */
+        }
+        .member h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        .member p {
+            font-size: 0.9em;
+            color: #ccc;
+        }
+
+
+        .alliance {
+            text-align: center;
+            margin-top: 35px; /* More space */
+        }
+        .alliance h4 { /* Changed from h3 to h4 as per your HTML */
+            color: #fff;
+            margin-bottom: 18px; /* More space */
+            font-size: 1.2em; /* Slightly larger */
+            font-weight: 700;
+        }
+        .alliance img {
+            width: 100%;
+            max-width: 180px; /* Larger logo */
+            height: auto;
+            margin-bottom: 25px; /* More space */
+            filter: drop-shadow(0 0 8px #6cfa3a); /* Green glow effect */
+        }
+
+        .footer-bottom {
+            background-color: #0d0d0d; /* Even darker bottom bar */
+            padding: 25px 0; /* More padding */
+            text-align: center;
+            font-size: 0.9em; /* Slightly larger */
+            color: #aaa; /* Softer text color */
+        }
+
+        .footer-bottom .wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px; /* More gap */
+            padding: 0 25px;
+        }
+
+        .footer-bottom p {
+            margin: 0;
+        }
+
+        .footer-bottom a {
+            color: #aaa;
+            transition: color 0.3s ease;
+        }
+        .footer-bottom a:hover {
+            color: #fff;
+        }
+
+        /* --- Responsive Adjustments --- */
+
+        /* Mobile Menu Toggle */
+        @media (max-width: 768px) {
+            /* Show the hamburger icon */
+            .menu-toggle {
+                display: block; 
+                margin-left: auto; /* Pushes it to the right */
+            }
+
+            /* Hide the navigation links initially on mobile */
+            .nav-links {
+                display: flex; 
+                flex-direction: column; /* Stack links vertically */
+                width: 100%;
+                position: absolute; 
+                top: 70px; /* Adjust this based on your top-nav height */
+                left: 0;
+                background-color: #ffffff; /* Background for the dropdown */
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+                padding: 0; 
+                z-index: 99; 
+
+                /* Key for the collapse/expand animation */
+                max-height: 0; /* Start collapsed */
+                overflow: hidden; 
+                transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out; 
+            }
+
+            /* State when menu is active (expanded) */
+            .nav-links.active {
+                max-height: 350px; /* A value large enough to contain all links (adjust if more links) */
+                padding: 15px 0; /* Add vertical padding when expanded */
+            }
+
+            /* Styling for individual links within the mobile menu */
+            .nav-links li {
+                width: 100%; /* Each link takes full width */
+            }
+
+            .nav-links a {
+                padding: 15px 25px; /* Larger clickable area */
+                border-bottom: 1px solid #f5f5f5; /* Lighter border between links */
+                width: 100%;
+                text-align: left;
+                font-size: 1.1em;
+            }
+            .nav-links a:last-child {
+                border-bottom: none; /* No border for the last link */
+            }
+            .nav-links a::after {
+                width: 0 !important; /* Remove desktop underline effect for mobile menu */
+            }
+
+            /* Ensure active link style doesn't interfere */
+            .nav-links.active a[href="./entertain.php"]::after {
+                width: 0 !important; 
+            }
+            .nav-links.active a[href="./entertain.php"] {
+                color: #e91e63; /* Keep color but no underline */
+            }
+        }
+
+        /* For screens smaller than 992px (e.g., tablets) */
+        @media (max-width: 992px) {
+            .nav-links {
+                gap: 15px;
+                font-size: 0.95em;
+            }
+            .site-title {
+                font-size: 18px;
+            }
+            .logo-box img {
+                height: 45px;
+            }
+            .main-content-area {
+                flex-direction: column;
+                gap: 25px;
+            }
+            .main-news, .sidebar {
+                min-width: 100%;
+                padding: 25px;
+            }
+            .featured-news .main1 {
+                height: 350px;
+            }
+            .featured-content h2 a {
+                font-size: 2.2em;
+            }
+            .sidebar h2 {
+                font-size: 1.8em;
+            }
+            .sidebar-item img {
+                width: 100px;
+                height: 75px;
+            }
+            .grid-container {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 25px;
+            }
+            .grid-item img {
+                height: 180px;
+            }
+            .slider .slides img {
+                height: 400px; /* Adjust slider height */
+            }
+            .slider-caption {
+                max-width: 85%;
+                bottom: 20px;
+                left: 20px;
+                right: 20px;
+                padding: 20px 25px;
+            }
+            .slider-caption h2 {
+                font-size: 2em;
+            }
+            .slider-caption p {
+                font-size: 1em;
+            }
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+                gap: 30px;
+            }
+            .footer-section {
+                min-width: 100%;
+                text-align: center;
+                padding-right: 0;
+            }
+            .footer-section h3::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            .footer-section ul {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px 20px;
+            }
+            .footer-section ul li {
+                margin-bottom: 0;
+            }
+            .footer-section ul li a {
+                padding: 0;
+            }
+            .social-icons {
+                margin-top: 15px;
+            }
+            .team-section {
+                flex-direction: column;
+                align-items: center;
+            }
+            .footer-bottom .wrapper {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* For very small screens (e.g., iPhone 5/SE, smaller Androids) */
+        @media (max-width: 480px) {
+            .top-nav {
+                height: 60px;
+                padding: 0 15px;
+            }
+            .logo-box {
+                padding: 0 10px;
+            }
+            .logo-box img {
+                height: 40px;
+            }
+            .site-title {
+                font-size: 16px;
+                margin-left: 10px;
+            }
+            .nav-links {
+                top: 60px; /* Adjust based on new top-nav height */
+            }
+            .page-header {
+                padding: 30px 15px;
+                margin-bottom: 40px;
+            }
+            .page-header h1 {
+                font-size: 3em;
+            }
+            .page-header p {
+                font-size: 1em;
+            }
+            .main-news {
+                padding: 20px;
+            }
+            .featured-news .main1 {
+                height: 250px;
+            }
+            .featured-content h2 a {
+                font-size: 1.6em;
+            }
+            .featured-content p {
+                font-size: 1em;
+            }
+            .sidebar {
+                padding: 20px;
+            }
+            .sidebar h2 {
+                font-size: 1.5em;
+                margin-bottom: 20px;
+            }
+            .sidebar-item {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 10px;
+            }
+            .sidebar-item img {
+                width: 100%;
+                max-width: 150px;
+                height: 100px;
+            }
+            .sidebar-text a {
+                font-size: 1.1em;
+            }
+            .slider {
+                padding: 10px;
+                margin: 30px auto;
+            }
+            .slides img {
+                height: 300px; /* Further adjust slider height */
+            }
+            .slider-caption {
+                bottom: 15px;
+                left: 15px;
+                right: 15px;
+                padding: 15px 20px;
+                max-width: 90%;
+            }
+            .slider-caption h2 {
+                font-size: 1.5em;
+            }
+            .slider-caption p {
+                font-size: 0.9em;
+            }
+            .slider button {
+                padding: 12px 10px;
+                font-size: 1.2em;
+            }
+            .grid-container {
+                grid-template-columns: 1fr; /* Single column on very small screens */
+                gap: 20px;
+                padding: 20px;
+            }
+            .grid-item img {
+                height: 150px;
+            }
+            .grid-item a {
+                font-size: 1.1em;
+                padding: 15px;
+            }
+            .footer-content {
+                gap: 20px;
+            }
+            .footer-section h3 {
+                font-size: 1.2em;
+                margin-bottom: 15px;
+            }
+            .footer-section h3::after {
+                width: 40px;
+            }
+            .social-icons a {
+                font-size: 1.5em;
+                margin-right: 10px;
+            }
+            .member {
+                padding: 15px;
+            }
+            .member img {
+                width: 90px;
+                height: 90px;
+            }
+            .footer-bottom {
+                padding: 15px 0;
+            }
+        }
