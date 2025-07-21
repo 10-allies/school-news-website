@@ -1,0 +1,166 @@
+body{
+            display: flex;
+            flex-direction: row;
+            margin: 0;
+            padding: 0;
+             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+             width:100%;
+             box-sizing: border-box;
+                
+            
+             
+
+        }
+        .first-content{
+            background-color:rgb(26, 25, 25);
+            width:95%;
+            height:100vh auto;
+            justify-content: center;
+            align-items: center;    
+            display: flex;
+            flex-direction: column;
+        }
+        .second-content{
+            background-color: rgb(44, 44, 44);
+            width:5%;
+            height:100vh;
+             
+            
+        }
+       .first-content h1{
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient( to right, rgb(0, 83, 167),rgb(33, 144, 255));
+        -webkit-background-clip: text; /* for Safari / Chrome */
+        background-clip: text; /* standard property for compatibility */
+        -webkit-text-fill-color: transparent;
+        font-size:2em;
+        margin-left:-5%;
+        margin-top: -5%;
+    
+        
+       }
+       .first-content h2{
+        position: absolute;
+        top:4%;
+        left:8%;
+        color: rgb(104, 101, 101);
+       }
+       .search-bar textarea{
+        width: 55%;
+       
+        height: 3em auto;
+        border-radius: 1.5em;
+        border: 1px solid hsl(0, 1.60%, 47.80%);
+        position:fixed;
+        bottom: 10%;
+        left:27%;
+         overflow: hidden;
+        padding-left: 1em;
+        font-size: 1.2em;
+        background:none;
+        color: white;
+        box-sizing: border-box;
+        min-height:0.5em;
+       
+       }
+       .search-bar textarea:focus{
+        border: 1px solid hsl(0, 1.60%, 47.80%);
+    padding:1em;
+        color: white;
+        transition: all 0.3s ease-in-out;
+        padding-bottom: 2em;
+       }
+     
+        .search-bar button{
+        background-color:rgb(44, 44, 44);
+        border-radius: 10em;
+        position: absolute;
+   top: 82%;
+   left:79%;
+
+   display: none;
+  
+
+       }
+       
+       button:hover{
+        transform: scale(1.1);
+    
+        transition: all 0.3s ease-in-out;
+       }
+      
+                 @media(max-width: 950px) {
+           .second-content{
+            display:none;
+           }
+              .first-content{
+                width:100%;
+                height:100vh;
+              }
+              .search-bar textarea{
+                width: 90%;
+                left:5%;
+                
+              }
+              .search-bar textarea:focus{
+                padding: 1em;
+                padding-bottom: 2em;
+                
+              }
+              .search-bar button{
+                left: 90%;
+                top: 82%;
+            
+              }
+              .search-bar label{
+                margin-left: -12em;
+                    
+                }
+                .first-content h2{
+                    margin-left:0.5em;
+                }
+                
+        }
+        @media screen and (max-width: 768px){
+              .search-bar button{
+                left: 85%;
+                top: 82%;
+            
+              }
+              .search-bar label{
+                margin-left:-6.5em;
+                    
+                }
+            
+        }
+        
+        @media screen and (max-width: 480px){
+            .second-content{
+                display:none;
+            }
+            .first-content{
+                width:100%;
+                height:100vh;
+            }
+        }
+        
+        .search-bar label{
+            background-color: rgb(44, 44, 44);
+            border-radius: 3em;
+            position: absolute;
+            left: 28%;
+            top:83%;
+            display:none;
+            
+        }
+        i svg{
+            color:rgb(216, 212, 212);
+            position:absolute;
+            top:5%;
+            left:2%;
+        }
+        
+       
+      

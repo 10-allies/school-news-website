@@ -54,6 +54,10 @@ try {
             display: inline-block;
             color:#555;
             
+        } 
+        .img{
+            width:30px;
+            height:30px;
         }
 </style>   
 </head>
@@ -76,6 +80,7 @@ try {
                 <a href="./pages/sport.php">Sports</a>
                 <a href="./pages/entertain.php">Entertainment</a>
                 <a href="./pages/announcement.php">Announcement</a>
+                <a href="./Ally ai/index.html"><img src="./images/icon.png"class="img" alt="Ally ai "></a>
             </div>
         </div>
         <section class="extra-content">
