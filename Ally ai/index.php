@@ -1,3 +1,9 @@
+<?php 
+if (!isset($_SESSION['name']) && isset($_COOKIE['user_name'])) {
+    header("Location: Allyai.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -22,11 +22,11 @@ $name=isset($_SESSION['name'])? $_SESSION['name']:"Friend";
       <h1>Hello, <?php echo htmlspecialchars($name);  ?></h1>
       
 <h2>Ally</h2>
- <i>
-        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
-  <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
-</svg>
-      </i>
+ <i onclick="togglePopup()">
+        ☰
+ <div id="showpop"class="showpop"> <a href="../index.php"> Return Home </a> </div>
+</i>
+     
       
       <div class="search-bar">
         <textarea name="" id="user-input" placeholder="Ask Ally"></textarea>
@@ -45,6 +45,10 @@ $name=isset($_SESSION['name'])? $_SESSION['name']:"Friend";
  
 </body>
 <script>
+    function togglePopup() {
+         const pop = document.getElementById('showpop');
+         pop.classList.toggle('visible');
+    }
     const textarea =document.getElementById('user-input');
 const button = document.getElementById('button');
 const add=document.getElementById('add');

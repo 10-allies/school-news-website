@@ -29,7 +29,7 @@ body{
         }
        .lead{
         color:white;
-    margin:10em 5em 10em 5em ;
+    margin:10em 5em 13em 5em ;
         
        }
        .first-content h2{
@@ -39,23 +39,42 @@ body{
         color: rgb(104, 101, 101);
        }
        .search-bar textarea{
-        width: 55%;
+         width: 55%;
        
-        height: 3em auto;
+        max-height: 10em;
+        overflow-y:auto;
+      scroll-behavior: smooth;
         border-radius: 1.5em;
         border: 1px solid hsl(0, 1.60%, 47.80%);
         position:fixed;
         bottom: 10%;
         left:27%;
-         overflow: hidden;
         padding-left: 1em;
         font-size: 1.2em;
         background:none;
-        color: white;
+        color: rgb(180, 179, 179);
         box-sizing: border-box;
         min-height:0.5em;
+        line-height: 1.5;
        
        }
+       textarea::-webkit-scrollbar {
+  width: 10px; 
+
+  
+}
+
+textarea::-webkit-scrollbar-track {
+  background:rgb(26, 25, 25);  
+  border-radius: 60px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background-color:  rgb(88, 88, 88);; /* Scroll thumb color */
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
        .search-bar textarea:focus{
         border: 1px solid hsl(0, 1.60%, 47.80%);
     padding:1em;
@@ -146,11 +165,12 @@ body{
             display:none;
             
         }
-        i svg{
+        i {
             color:rgb(216, 212, 212);
             position:fixed;
             top:5%;
             left:2%;
+            cursor:pointer;
         }
         .msq-div{
           width: 20%;
@@ -177,4 +197,25 @@ body{
   color: black;
   align-self: flex-start;
 }
+ .showpop{
+           position: absolute;
+        transform: translateX(20%);
+      background: #333;
+      color: white;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 14px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+        }
+        .visible{
+          opacity: 1;
+          pointer-events:auto;
+        }
+        .showpop a{
+          color:white;
+          text-decoration: none;
+        }
 
