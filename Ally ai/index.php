@@ -104,7 +104,7 @@ a{
         document.addEventListener('DOMContentLoaded', function() {
     const welcomeTextElement = document.getElementById('welcome-text');
     const signInButton = document.getElementById('signInButton');
-    const textToType = "Welcome to The Ally AI";
+    const textToType = "Welcome to  Ally AI";
     const typingSpeed = 100; 
     const delayBeforeSignIn = 1000; 
 
