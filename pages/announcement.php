@@ -1,14 +1,11 @@
 <?php
-include '../connection/connect.php'; // Ensure your connection file is included
-session_start(); // If you need session data on this page
+include '../connection/connect.php';
+session_start();
 
 $announcements = [];
 $error_message = '';
 
 try {
-    // Select news items with category_id = 4 (Announcements)
-    // LEFT JOIN with media to get associated files.
-    // Order by created_at in descending order to show latest first.
     $stmt = $pdo->prepare("
         SELECT
             n.news_id,
@@ -25,7 +22,7 @@ try {
     $stmt->execute();
     $announcements = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    $error_message = "? Error fetching announcements: " . htmlspecialchars($e->getMessage());
+    $error_message = "⚠ Error fetching announcements: " . htmlspecialchars($e->getMessage());
 }
 ?>
 
@@ -36,7 +33,47 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>School Announcements</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
+        /* --- CSS Variables for Theme Colors --- */
+        :root {
+            --bg-primary: #f4f4f4;
+            --bg-secondary: #ffffff;
+            --bg-overlay: rgba(255, 255, 255, 0.95);
+            --bg-announcement: rgba(255, 255, 255, 0.9);
+            --bg-container: rgba(255, 255, 255, 0.2);
+            --text-primary: #333;
+            --text-secondary: #555;
+            --text-tertiary: #777;
+            --border-color: #e0e0e0;
+            --shadow-light: rgba(0,0,0,0.1);
+            --shadow-medium: rgba(0,0,0,0.2);
+            --shadow-hover: rgba(0,0,0,0.3);
+            --accent-green: #6cfa3a;
+            --accent-blue: #0056b3;
+            --accent-hover: #1a73e8;
+            --hover-bg: #f8f9fa;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --bg-overlay: rgba(29, 29, 29, 0.95);
+            --bg-announcement: rgba(45, 45, 45, 0.95);
+            --bg-container: rgba(45, 45, 45, 0.3);
+            --text-primary: #e0e0e0;
+            --text-secondary: #b0b0b0;
+            --text-tertiary: #909090;
+            --border-color: #404040;
+            --shadow-light: rgba(0,0,0,0.3);
+            --shadow-medium: rgba(0,0,0,0.4);
+            --shadow-hover: rgba(0,0,0,0.5);
+            --accent-green: #6cfa3a;
+            --accent-blue: #4a9eff;
+            --accent-hover: #5a9eff;
+            --hover-bg: #3a3a3a;
+        }
+
         /* --- General Reset & Body Layout --- */
         * {
             padding: 0;
@@ -51,15 +88,16 @@ try {
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Inter', Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             display: flex;
             flex-direction: column;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        /* Wrapper for main content to push footer down */
         .wrapper {
-            flex: 1; /* Allow wrapper to grow and push footer to bottom */
+            flex: 1;
             width: 100%;
             max-width: 1250px;
             margin: 0 auto;
@@ -72,13 +110,14 @@ try {
             align-items: center;
             justify-content: space-between;
             padding: 0 20px;
-            height: 65px;
-            border-bottom: 1px solid #e0e0e0;
-            background-color: #ffffff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            height: 100px;
+            border-bottom: 1px solid var(--border-color);
+            background-color: var(--bg-secondary);
+            box-shadow: 0 2px 5px var(--shadow-light);
             position: sticky;
             top: 0;
             z-index: 1000;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
         .nav-left {
@@ -87,8 +126,8 @@ try {
         }
 
         .logo-box {
-            background-color: greenyellow;
-            height: 100%;
+            background-color: var(--accent-green);
+            height: 100px;
             padding: 0 12px;
             display: flex;
             align-items: center;
@@ -101,32 +140,40 @@ try {
         }
 
         .site-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #6cfa3a;
+            font-size: 1.2em;
+            font-weight: 800;
+            color: var(--accent-green);
             margin-left: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
         }
 
         .nav-links {
             display: flex;
             gap: 25px;
-            margin-left: 50px;
-            font-weight: bold;
+            font-weight: 600;
             list-style: none;
             padding: 0;
+            margin: 0;
         }
 
         .nav-links a {
             text-decoration: none;
-            color: black;
-            font-size: 16px;
+            color: var(--text-primary);
+            font-size: 1em;
             position: relative;
             padding-bottom: 5px;
             transition: color 0.2s ease-in-out;
         }
 
         .nav-links a:hover {
-            color: #1a73e8;
+            color: var(--accent-hover);
         }
 
         .nav-links a:hover::after {
@@ -136,10 +183,36 @@ try {
             left: 0;
             height: 2px;
             width: 100%;
-            background-color: #1a73e8;
+            background-color: var(--accent-hover);
         }
 
-        /* Toggle Button (Hamburger) */
+        /* Theme Toggle Button */
+        .theme-toggle {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            width: 60px;
+            height: 32px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle::before {
+            content: '☀️';
+            position: absolute;
+            left: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] .theme-toggle::before {
+            content: '🌙';
+            left: calc(100% - 28px);
+        }
+
         .nav-toggle {
             display: none;
             flex-direction: column;
@@ -154,122 +227,88 @@ try {
             display: block;
             width: 100%;
             height: 3px;
-            background-color: black;
+            background-color: var(--text-primary);
             border-radius: 2px;
             transition: all 0.3s ease-in-out;
         }
 
-        /* Responsive Mobile Navigation */
-        @media (max-width: 768px) {
-            .nav-toggle {
-                display: flex;
-            }
-
-            .nav-links {
-                position: absolute;
-                top: 65px;
-                left: 0;
-                width: 100%;
-                flex-direction: column;
-                background-color: #ffffff;
-                box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-                padding: 15px 0;
-                border-top: 1px solid #e0e0e0;
-                display: none;
-                margin-left: 0;
-            }
-
-            .nav-links.active {
-                display: flex;
-            }
-
-            .nav-links li {
-                width: 100%;
-                text-align: center;
-            }
-
-            .nav-links a {
-                padding: 10px 0;
-            }
-
-            .top-nav {
-                justify-content: space-between;
-            }
-
-            .site-title {
-                margin-left: 10px;
-            }
-        }
-
-        /* --- Custom Styling for Announcements Page Content --- */
+        /* --- Content Container --- */
         .content-container {
             width: 90%;
-            margin: 20px auto;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 30px;
+            margin: 30px auto;
+            background: var(--bg-container);
+            padding: 40px 30px;
             border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px var(--shadow-light);
             backdrop-filter: blur(10px);
             text-align: center;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-            padding-bottom: 70px;
+            gap: 30px;
+            padding-bottom: 50px;
             align-items: start;
+            transition: background 0.3s ease;
         }
         
         h2 {
             grid-column: 1 / -1;
             text-align: center;
-            color: #333;
+            color: var(--text-primary);
             margin-bottom: 25px;
-            font-size: 2.2em;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            font-size: 2.5em;
+            text-shadow: 1px 1px 2px var(--shadow-light);
+            font-weight: 800;
         }
         
         .announcement {
             position: relative;
-            background: rgba(255, 255, 255, 0.9);
+            background: var(--bg-announcement);
             padding: 25px;
-            color: #333;
-            font-weight: bold;
-            border-radius: 8px;
-            box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            color: var(--text-primary);
+            font-weight: 600;
+            border-radius: 12px;
+            box-shadow: 2px 2px 10px var(--shadow-medium);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
             margin-top: 20px;
             text-align: left;
             display: flex;
             flex-direction: column;
-            min-height: 250px;
+            min-height: 280px;
             justify-content: space-between;
+            border: 1px solid var(--border-color);
         }
 
         .announcement:hover {
-            transform: translateY(-5px);
-            box-shadow: 4px 4px 12px rgba(0,0,0,0.3);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 4px 4px 20px var(--shadow-hover);
         }
-
-        /* Remove any old rope/hole styles */
-       
 
         .announcement h3 {
-            color: #0056b3;
-            margin-bottom: 10px;
+            color: var(--accent-blue);
+            margin-bottom: 15px;
             font-size: 1.5em;
             word-wrap: break-word;
+            line-height: 1.3;
+            font-weight: 700;
         }
+
         .announcement p {
-            line-height: 1.6;
+            line-height: 1.7;
             margin-bottom: 15px;
             flex-grow: 1;
+            color: var(--text-secondary);
+            font-weight: 400;
         }
+
         .announcement small {
-            color: #777;
-            font-size: 0.8em;
+            color: var(--text-tertiary);
+            font-size: 0.85em;
             display: block;
             text-align: right;
-            margin-top: 10px;
+            margin-top: 15px;
+            font-weight: 500;
         }
+
         .announcement img {
             max-width: 100%;
             height: auto;
@@ -277,38 +316,64 @@ try {
             object-fit: contain;
             display: block;
             margin: 15px auto 10px auto;
-            border-radius: 4px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px var(--shadow-light);
         }
+
         .announcement a {
-            color: #007bff;
+            color: var(--accent-blue);
             text-decoration: none;
-            font-weight: normal;
+            font-weight: 600;
+            transition: color 0.3s ease;
         }
+
         .announcement a:hover {
             text-decoration: underline;
+            color: var(--accent-hover);
         }
+
+        .announcement video {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px var(--shadow-light);
+        }
+
+        .document-link {
+            background: var(--hover-bg);
+            padding: 12px;
+            border-radius: 6px;
+            margin: 15px 0;
+            border: 1px dashed var(--border-color);
+        }
+
         .error-message {
-            color: red;
+            color: #e74c3c;
             text-align: center;
-            font-weight: bold;
+            font-weight: 700;
             grid-column: 1 / -1;
+            background: rgba(231, 76, 60, 0.1);
+            padding: 20px;
+            border-radius: 8px;
         }
+
         .no-announcements {
             text-align: center;
-            color: #555;
-            padding: 20px;
+            color: var(--text-secondary);
+            padding: 40px 20px;
             grid-column: 1 / -1;
+            font-size: 1.2em;
         }
 
         /* --- Footer Styles --- */
         .site-footer {
-            background-color: #004d00; /* Dark green background */
+            background-color: #1a1a1a;
             color: white;
-            padding: 40px 20px 0; /* Padding top, sides, no bottom padding for now */
-            font-family: Arial, sans-serif;
-            margin-top: auto; /* Pushes the footer to the bottom */
-            flex-shrink: 0; /* Prevent footer from shrinking */
+            padding: 40px 20px 0;
+            font-family: 'Inter', Arial, sans-serif;
+            margin-top: auto;
+            flex-shrink: 0;
         }
 
         .footer-content {
@@ -318,29 +383,29 @@ try {
             max-width: 1200px;
             margin: 0 auto;
             gap: 30px;
-            padding-bottom: 30px; /* Padding above the bottom bar */
+            padding-bottom: 30px;
         }
 
         .footer-section {
             flex: 1;
             min-width: 250px;
-            margin-bottom: 20px; /* Space between sections on wrap */
+            margin-bottom: 20px;
         }
 
         .footer-section h3 {
-            color: #6cfa3a; /* Green for headings */
+            color: var(--accent-green);
             margin-bottom: 15px;
             font-size: 1.3em;
-            border-bottom: 2px solid #6cfa3a; /* Underline for headings */
+            border-bottom: 2px solid var(--accent-green);
             padding-bottom: 5px;
-            display: inline-block; /* Make border-bottom fit content */
+            display: inline-block;
         }
-         .footer-section h4 { /* For "Our Journalists" sub-heading */
-            color: #6cfa3a; /* Green for headings */
+
+        .footer-section h4 {
+            color: var(--accent-green);
             margin-bottom: 10px;
             font-size: 1.1em;
         }
-
 
         .footer-section p {
             font-size: 0.95em;
@@ -363,7 +428,7 @@ try {
         }
 
         .footer-section ul li a:hover {
-            color: #6cfa3a; /* Hover color for links */
+            color: var(--accent-green);
         }
 
         .social-icons a {
@@ -374,74 +439,64 @@ try {
         }
 
         .social-icons a:hover {
-            color: #6cfa3a; /* Hover color for social icons */
+            color: var(--accent-green);
         }
 
-        /* Journalist Team Section in Footer */
-        .footer-section .team-section {
+        .team-section {
             display: flex;
-            flex-direction: column; /* Stack members vertically in footer */
+            flex-direction: column;
             gap: 15px;
             margin-top: 10px;
-            opacity: 1; /* Already visible in footer */
-            transform: translateY(0); /* No initial transform needed here */
         }
 
-        .footer-section .member {
+        .member {
             display: flex;
             align-items: center;
             gap: 15px;
-            background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent background for members */
+            background-color: rgba(255, 255, 255, 0.1);
             padding: 10px;
             border-radius: 8px;
             transition: background-color 0.3s ease;
-            width: 100%; /* Take full width of its container */
-            max-width: none; /* Override previous max-width */
-            text-align: left; /* Align text left within member box */
         }
 
-        .footer-section .member:hover {
+        .member:hover {
             background-color: rgba(255, 255, 255, 0.2);
-            transform: none; /* No lift effect in footer */
         }
 
-        .footer-section .member img {
-            width: 60px; /* Smaller circular image in footer */
+        .member img {
+            width: 60px;
             height: 60px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid #6cfa3a;
-            flex-shrink: 0; /* Prevent image from shrinking */
-            margin-bottom: 0; /* Reset margin */
+            border: 2px solid var(--accent-green);
         }
 
-        .footer-section .member h4 {
+        .member h4 {
             font-size: 1em;
             margin-bottom: 5px;
-            color: #6cfa3a;
+            color: var(--accent-green);
         }
 
-        .footer-section .member p {
+        .member p {
             font-size: 0.8em;
             margin-bottom: 0;
             line-height: 1.4;
         }
 
-        /* Alliance Section in Footer */
-        .footer-section .alliance h4 {
-            color: #6cfa3a;
+        .alliance h4 {
+            color: var(--accent-green);
             margin-bottom: 10px;
             font-size: 1.1em;
         }
-        .footer-section .alliance img {
-            max-width: 100px; /* Smaller alliance logo in footer */
+
+        .alliance img {
+            max-width: 100px;
             height: auto;
             margin-top: 0;
         }
 
-        /* Footer Bottom Bar */
         .footer-bottom {
-            background-color: #003300; /* Even darker green for bottom bar */
+            background-color: #0d0d0d;
             padding: 15px 20px;
             font-size: 0.85em;
             text-align: center;
@@ -461,8 +516,72 @@ try {
             margin: 0;
         }
 
-        /* Responsive adjustments for Footer */
+        /* --- Responsive Design --- */
         @media (max-width: 768px) {
+            .nav-toggle {
+                display: flex;
+            }
+
+            .nav-right {
+                position: absolute;
+                top: 100px;
+                left: 0;
+                width: 100%;
+                flex-direction: column;
+                background-color: var(--bg-secondary);
+                box-shadow: 0 5px 10px var(--shadow-light);
+                padding: 15px 0;
+                border-top: 1px solid var(--border-color);
+                display: none;
+                gap: 0;
+            }
+
+            .nav-right.active {
+                display: flex;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                width: 100%;
+                gap: 0;
+            }
+
+            .nav-links li {
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav-links a {
+                padding: 10px 0;
+                display: block;
+            }
+
+            .theme-toggle {
+                margin: 15px auto 0;
+            }
+
+            .top-nav {
+                justify-content: space-between;
+            }
+
+            .site-title {
+                margin-left: 10px;
+            }
+
+            .content-container {
+                width: 95%;
+                padding: 30px 20px;
+                grid-template-columns: 1fr;
+            }
+
+            h2 {
+                font-size: 2em;
+            }
+
+            .announcement {
+                min-height: 200px;
+            }
+
             .footer-content {
                 flex-direction: column;
                 align-items: center;
@@ -470,34 +589,52 @@ try {
             }
 
             .footer-section {
-                min-width: unset; /* Remove min-width on small screens */
-                width: 90%; /* Take more width on small screens */
+                min-width: unset;
+                width: 90%;
             }
 
             .footer-section h3 {
-                margin-top: 20px; /* Add space between stacked headings */
+                margin-top: 20px;
             }
 
             .social-icons {
                 margin-bottom: 20px;
             }
-            .footer-section ul {
-                text-align: center; /* Center quick links */
-            }
-            .footer-section ul li a {
-                display: inline-block; /* Allow wrapping for inline display */
-                margin: 0 8px; /* Space between inline links */
-            }
 
-            .footer-section .member {
-                flex-direction: column; /* Stack image and text in member on small screens */
+            .footer-section ul {
                 text-align: center;
             }
-            .footer-section .member img {
-                margin-bottom: 10px; /* Space below image */
+
+            .footer-section ul li a {
+                display: inline-block;
+                margin: 0 8px;
             }
+
+            .member {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .member img {
+                margin-bottom: 10px;
+            }
+
             .footer-bottom .wrapper {
                 flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h2 {
+                font-size: 1.8em;
+            }
+
+            .content-container {
+                padding: 20px 15px;
+            }
+
+            .announcement h3 {
+                font-size: 1.3em;
             }
         }
     </style>
@@ -515,18 +652,21 @@ try {
             <span></span>
             <span></span>
         </div>
-        <ul class="nav-links" id="navLinks">
-            <li><a href="../index.php">All</a></li>
-            <li><a href="../local/local.php">Local news</a></li>
-            <li><a href="sport.php">Sports</a></li>
-            <li><a href="entertain.php">Entertainment</a></li>
-            <li><a href="./announcement.php">Announcement</a></li>
-        </ul>
+        <div class="nav-right" id="navRight">
+            <ul class="nav-links">
+                <li><a href="../index.php">All</a></li>
+                <li><a href="../local/local.php">Local news</a></li>
+                <li><a href="sport.php">Sports</a></li>
+                <li><a href="entertain.php">Entertainment</a></li>
+                <li><a href="./announcement.php">Announcement</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode"></button>
+        </div>
     </div>
 
     <div class="wrapper">
         <div class="content-container">
-            <h2>School Announcements</h2>
+            <h2>📢 School Announcements</h2>
 
             <?php if (isset($error_message) && !empty($error_message)): ?>
                 <p class="error-message"><?php echo $error_message; ?></p>
@@ -537,28 +677,22 @@ try {
                             <h3><?php echo htmlspecialchars($announcement['news_title']); ?></h3>
                             
                             <?php
-                            // Display news_content only if it's not empty or just whitespace
                             if (!empty(trim($announcement['news_content']))) {
                                 echo '<p>' . nl2br(htmlspecialchars($announcement['news_content'])) . '</p>';
                             }
                             ?>
 
                             <?php
-                            // Check if there's a media URL and display based on type
                             if (!empty($announcement['media_url']) && $announcement['media_url'] !== 'uploads/default.jpg') {
                                 $media_url_clean = htmlspecialchars($announcement['media_url']);
-                                
-                                // Ensure the path for displaying images is correct relative to this page.
-                                // If announcement.php is in 'pages/' and uploads is in the root,
-                                // '../uploads/' is correct.
                                 $display_media_url = $media_url_clean;
 
                                 if ($announcement['media_type'] === 'image') {
                                     echo '<img src="' . $display_media_url . '" alt="Announcement Image">';
                                 } elseif ($announcement['media_type'] === 'document') { 
-                                    echo '<p class="document-link">Attached Document: <a href="' . $display_media_url . '" target="_blank">' . basename($display_media_url) . '</a></p>';
+                                    echo '<p class="document-link">📎 Attached Document: <a href="' . $display_media_url . '" target="_blank">' . basename($display_media_url) . '</a></p>';
                                 } elseif ($announcement['media_type'] === 'video') {
-                                    echo '<video controls style="max-width:100%; height:auto;">';
+                                    echo '<video controls>';
                                     echo '<source src="' . $display_media_url . '" type="video/mp4">'; 
                                     echo 'Your browser does not support the video tag.';
                                     echo '</video>';
@@ -566,11 +700,11 @@ try {
                             }
                             ?>
 
-                            <small>Posted on: <?php echo htmlspecialchars($announcement['created_at']); ?></small>
+                            <small>📅 Posted on: <?php echo htmlspecialchars($announcement['created_at']); ?></small>
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>
-                    <p class="no-announcements">No announcements available.</p>
+                    <p class="no-announcements">📭 No announcements available at this time.</p>
                 <?php endif; ?>
             <?php endif; ?>
         </div>
@@ -606,13 +740,17 @@ try {
                 <div class="team-section" id="team">
                     <div class="member">
                         <img src="../images/eric.jpg" alt="Eric Bombo Chocola">
-                        <h4>ERIC BOMBO CHOCOLA</h4>
-                        <p>HOPE HAVEN RWANDA, YES! TOGETHER WE MAKE A BETTER WORLD</p>
+                        <div>
+                            <h4>ERIC BOMBO CHOCOLA</h4>
+                            <p>HOPE HAVEN RWANDA, YES! TOGETHER WE MAKE A BETTER WORLD</p>
+                        </div>
                     </div>
                     <div class="member">
                         <img src="../images/journal.jpg" alt="Nicole">
-                        <h4>Nicole</h4>
-                        <p>World of information, World of life</p>
+                        <div>
+                            <h4>Nicole</h4>
+                            <p>World of information, World of life</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -635,41 +773,47 @@ try {
     </footer>
 
     <script>
-        // Smooth scrolling for anchor links (optional)
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+
+        // Check for saved theme preference or default to 'light'
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        htmlElement.setAttribute('data-theme', currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            htmlElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
             });
         });
 
-        // Team section animation (for the main content team section if any, but now also in footer)
-        // Note: The footer's team section might not need this animation if it's always visible.
-        // I've kept it as it was in your previous script.
-        document.addEventListener('DOMContentLoaded', animateSections);
-
-        function animateSections() {
-            const teamSection = document.getElementById("team");
-            if (teamSection) {
-                teamSection.style.opacity = "1";
-                teamSection.style.transform = "translateY(0)";
-            }
-        }
-
         // Navigation Toggle (Hamburger menu)
         const navToggle = document.getElementById('navToggle');
-        const navLinks = document.getElementById('navLinks');
+        const navRight = document.getElementById('navRight');
 
         navToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
+            navRight.classList.toggle('active');
         });
 
-        // Close nav menu when a link is clicked (for mobile)
-        navLinks.querySelectorAll('a').forEach(link => {
+        // Close nav menu when a link is clicked
+        document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
+                navRight.classList.remove('active');
             });
         });
     </script>

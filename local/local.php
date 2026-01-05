@@ -18,15 +18,12 @@ try {
         $local_news_category_id = (int)$category_row['category_id'];
     } else {
         // If 'Local news' category doesn't exist, handle it gracefully
-        // Or create it if that's part of the setup
         echo "<p style='color:red; text-align:center;'>Warning: 'Local news' category not found in the database. Please create it.</p>";
-        // You might want to exit or set $category_news to empty array
-        $category_news = []; // Ensure this is empty if category not found
+        $category_news = [];
     }
 } catch (PDOException $e) {
     die("Error fetching category ID: " . $e->getMessage());
 }
-
 
 // Fetch news only from the determined local_news_category_id
 $category_news = [];
@@ -35,7 +32,7 @@ if ($local_news_category_id > 0) {
                                  a.author_display_name AS posted_by, m.media_url, m.media_caption
                           FROM news n
                           LEFT JOIN authors a ON n.author_id = a.author_id
-                          LEFT JOIN media m ON n.news_id = m.news_id AND m.media_type='image' -- Ensure we only get image media for display
+                          LEFT JOIN media m ON n.news_id = m.news_id AND m.media_type='image'
                           WHERE n.status='published' AND n.category_id = :category_id
                           ORDER BY n.created_at DESC";
 
@@ -51,10 +48,26 @@ if ($local_news_category_id > 0) {
 
 // Prepare sections
 $slider_news = array_slice($category_news, 0, 3); // Top 3 for slider
-$top_stories = array_slice($category_news, 0, 3); // Top 3 for top stories (can overlap with slider or fetch separately)
+$top_stories = array_slice($category_news, 0, 3); // Top 3 for top stories
 $other_news = array_slice($category_news, 3, 4); // Next 4 for "Other Updates"
 
-// Close connection (PDO auto-closes when script ends, but explicit null helps)
+// Function to get correct image path
+function getImagePath($media_url) {
+    if (empty($media_url) || $media_url === 'uploads/default.jpg') {
+        return '../images/placeholder.jpg';
+    }
+    
+    // Handle both /uploads/ and uploads/ formats
+    if (strpos($media_url, '/') === 0) {
+        // If starts with /, prepend ..
+        return '..' . htmlspecialchars($media_url);
+    } else {
+        // If starts with uploads/, prepend ../
+        return  htmlspecialchars($media_url);
+    }
+}
+
+// Close connection
 $pdo = null;
 ?>
 
@@ -66,8 +79,46 @@ $pdo = null;
     <title>Local News - APPEAL Newspaper</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="local.css">
     
     <style>
+        /* --- CSS Variables for Theme Colors --- */
+        :root {
+            --bg-primary: #f0f2f5;
+            --bg-secondary: #ffffff;
+            --bg-header: #e6e6e6;
+            --text-primary: #333;
+            --text-secondary: #555;
+            --text-tertiary: #777;
+            --border-color: #e0e0e0;
+            --shadow-light: rgba(0,0,0,0.1);
+            --shadow-medium: rgba(0,0,0,0.08);
+            --accent-green: #6cfa3a;
+            --accent-blue: #0056b3;
+            --footer-bg: #004d00;
+            --footer-dark: #003300;
+            --slide-overlay: rgba(0,0,0,0.8);
+            --slide-filter: brightness(70%);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --bg-header: #252525;
+            --text-primary: #e0e0e0;
+            --text-secondary: #b0b0b0;
+            --text-tertiary: #909090;
+            --border-color: #404040;
+            --shadow-light: rgba(0,0,0,0.3);
+            --shadow-medium: rgba(0,0,0,0.2);
+            --accent-green: #6cfa3a;
+            --accent-blue: #4a9eff;
+            --footer-bg: #1a3a1a;
+            --footer-dark: #0d1f0d;
+            --slide-overlay: rgba(0,0,0,0.9);
+            --slide-filter: brightness(60%);
+        }
+
         /* --- General Reset & Body Layout --- */
         * {
             padding: 0;
@@ -83,37 +134,67 @@ $pdo = null;
 
         body {
             font-family: 'Inter', Arial, sans-serif;
-            background-color: #f0f2f5; /* Lighter background */
+            background-color: var(--bg-primary);
             display: flex;
             flex-direction: column;
             line-height: 1.6;
-            color: #333;
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         .wrapper {
-            flex: 1; /* Allow wrapper to grow and push footer to bottom */
+            flex: 1;
             width: 100%;
-            max-width: 1250px; /* Consistent max width */
+            max-width: 1250px;
             margin: 0 auto;
             margin-top: 40px;
             position: relative;
-            padding: 0 15px; /* Add some horizontal padding */
+            padding: 0 15px;
+        }
+
+        /* --- Theme Toggle Button --- */
+        .theme-toggle {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            width: 60px;
+            height: 32px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+            margin-left: 20px;
+        }
+
+        .theme-toggle::before {
+            content: '☀️';
+            position: absolute;
+            left: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] .theme-toggle::before {
+            content: '🌙';
+            left: calc(100% - 28px);
         }
 
         /* --- Top Navigation Bar (Header) --- */
-  .top-nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 20px;
-    height: 100px; /* Changed from 105px to 100px */
-    border-bottom: 1px solid #e0e0e0;
-    background-color: #ffffff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    position: sticky;
-    top: 5px;
-    z-index: 1000;
-}}
+        .top-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            height: 100px;
+            border-bottom: 1px solid var(--border-color);
+            background-color: var(--bg-secondary);
+            box-shadow: 0 2px 5px var(--shadow-light);
+            position: sticky;
+            top: 5px;
+            z-index: 1000;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
 
         .nav-left {
             display: flex;
@@ -121,7 +202,7 @@ $pdo = null;
         }
 
         .logo-box {
-            background-color: #6cfa3a; /* Greenish-yellow from other headers */
+            background-color: var(--accent-green);
             height: 100%;
             padding: 0 12px;
             display: flex;
@@ -130,31 +211,37 @@ $pdo = null;
         }
 
         .logo-box img {
-            height: 46px; /* Adjusted to fit the height of the nav */
+            height: 46px;
             width: auto;
         }
 
         .site-title {
-            font-size: 1.2em; /* Slightly larger */
-            font-weight: 800; /* Bold */
-            color: #6cfa3a; /* Greenish-yellow */
+            font-size: 1.2em;
+            font-weight: 800;
+            color: var(--accent-green);
             margin-left: 15px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
         .nav-links {
             display: flex;
             gap: 25px;
-            margin-left: 50px;
-            font-weight: 600; /* Semi-bold */
+            font-weight: 600;
             list-style: none;
             padding: 0;
+            margin: 0;
         }
 
         .nav-links a {
             text-decoration: none;
-            color: #333; /* Darker text */
+            color: var(--text-primary);
             font-size: 1.0em;
             position: relative;
             padding-bottom: 5px;
@@ -162,24 +249,24 @@ $pdo = null;
         }
 
         .nav-links a:hover,
-        .nav-links a.active { /* Added active state */
-            color: #0056b3; /* Blue for hover/active */
+        .nav-links a.active {
+            color: var(--accent-blue);
         }
 
         .nav-links a:hover::after,
-        .nav-links a.active::after { /* Underline for hover/active */
+        .nav-links a.active::after {
             content: "";
             position: absolute;
             bottom: 0;
             left: 0;
             height: 2px;
             width: 100%;
-            background-color: #0056b3;
+            background-color: var(--accent-blue);
         }
 
         /* Toggle Button (Hamburger) for mobile */
         .nav-toggle {
-            display: none; /* Hidden by default for desktop */
+            display: none;
             flex-direction: column;
             justify-content: space-between;
             width: 30px;
@@ -192,7 +279,7 @@ $pdo = null;
             display: block;
             width: 100%;
             height: 3px;
-            background-color: #333;
+            background-color: var(--text-primary);
             border-radius: 2px;
             transition: all 0.3s ease-in-out;
         }
@@ -200,25 +287,31 @@ $pdo = null;
         /* Responsive Mobile Navigation */
         @media (max-width: 768px) {
             .nav-toggle {
-                display: flex; /* Show hamburger on mobile */
+                display: flex;
             }
 
-            .nav-links {
+            .nav-right {
                 position: absolute;
-                top: 65px; /* Below the header */
+                top: 100px;
                 left: 0;
                 width: 100%;
                 flex-direction: column;
-                background-color: #ffffff;
-                box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+                background-color: var(--bg-secondary);
+                box-shadow: 0 5px 10px var(--shadow-light);
                 padding: 15px 0;
-                border-top: 1px solid #e0e0e0;
-                display: none; /* Hide by default */
-                margin-left: 0;
+                border-top: 1px solid var(--border-color);
+                display: none;
+                gap: 0;
             }
 
-            .nav-links.active {
-                display: flex; /* Show when active */
+            .nav-right.active {
+                display: flex;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                width: 100%;
+                gap: 0;
             }
 
             .nav-links li {
@@ -228,6 +321,11 @@ $pdo = null;
 
             .nav-links a {
                 padding: 10px 0;
+                display: block;
+            }
+
+            .theme-toggle {
+                margin: 15px auto 0;
             }
 
             .site-title {
@@ -239,10 +337,11 @@ $pdo = null;
         .page-heading {
             text-align: center;
             padding: 40px 20px;
-            background-color: #e6e6e6; /* Light gray background */
+            background-color: var(--bg-header);
             margin-bottom: 30px;
-            box-shadow: inset 0 -2px 5px rgba(0,0,0,0.05);
+            box-shadow: inset 0 -2px 5px var(--shadow-light);
             position: relative;
+            transition: background-color 0.3s ease;
         }
 
         .page-heading::before {
@@ -252,21 +351,21 @@ $pdo = null;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(108, 250, 58, 0.1), rgba(0, 86, 179, 0.05)); /* Subtle gradient overlay */
+            background: linear-gradient(135deg, rgba(108, 250, 58, 0.1), rgba(0, 86, 179, 0.05));
             pointer-events: none;
         }
 
         .page-heading h1 {
-            font-size: 3.2em; /* Larger, more impactful heading */
-            color: #0056b3; /* Blue color */
+            font-size: 3.2em;
+            color: var(--accent-blue);
             margin-bottom: 10px;
             font-weight: 800;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+            text-shadow: 2px 2px 4px var(--shadow-light);
         }
 
         .page-heading p {
             font-size: 1.1em;
-            color: #555;
+            color: var(--text-secondary);
             max-width: 700px;
             margin: 0 auto;
         }
@@ -275,12 +374,12 @@ $pdo = null;
         .slider {
             position: relative;
             width: 100%;
-            height: 450px; /* Fixed height for consistency */
+            height: 450px;
             overflow: hidden;
             border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 20px var(--shadow-light);
             margin-bottom: 40px;
-            background-color: #fff; /* Fallback background */
+            background-color: var(--bg-secondary);
         }
 
         .slide {
@@ -292,24 +391,24 @@ $pdo = null;
             opacity: 0;
             transition: opacity 1s ease-in-out;
             display: flex;
-            align-items: flex-end; /* Align caption to bottom */
+            align-items: flex-end;
             justify-content: center;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            z-index: 1; /* Ensure slides stack correctly */
+            z-index: 1;
         }
 
         .slide.active {
             opacity: 1;
-            z-index: 2; /* Active slide on top */
+            z-index: 2;
         }
 
         .slide img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Cover the entire slide area */
-            filter: brightness(70%); /* Slightly darken image for better text contrast */
+            object-fit: cover;
+            filter: var(--slide-filter);
         }
 
         .slide-caption {
@@ -317,44 +416,46 @@ $pdo = null;
             bottom: 0;
             left: 0;
             width: 100%;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0)); /* Gradient background for caption */
+            background: linear-gradient(to top, var(--slide-overlay), rgba(0,0,0,0));
             color: white;
             padding: 30px 40px;
-            font-size: 2em; /* Larger caption text */
+            font-size: 2em;
             font-weight: 700;
             text-align: center;
             text-shadow: 2px 2px 5px rgba(0,0,0,0.6);
-            z-index: 3; /* Above image */
-            box-sizing: border-box; /* Include padding in width calculation */
+            z-index: 3;
+            box-sizing: border-box;
         }
 
         /* --- Content Container (Main Grid Layout) --- */
         .content-container {
             display: grid;
-            grid-template-columns: 2fr 1fr; /* Main content takes 2/3, sidebar 1/3 */
-            gap: 40px; /* Space between columns */
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
             margin-bottom: 50px;
         }
 
         main {
-            background-color: #ffffff;
+            background-color: var(--bg-secondary);
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 15px var(--shadow-medium);
+            transition: background-color 0.3s ease;
         }
 
         aside {
-            background-color: #ffffff;
+            background-color: var(--bg-secondary);
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 15px var(--shadow-medium);
+            transition: background-color 0.3s ease;
         }
 
         main h2, aside h2 {
             font-size: 2em;
-            color: #0056b3;
+            color: var(--accent-blue);
             margin-bottom: 25px;
-            border-bottom: 2px solid #e0e0e0;
+            border-bottom: 2px solid var(--border-color);
             padding-bottom: 10px;
             font-weight: 700;
         }
@@ -364,53 +465,53 @@ $pdo = null;
             display: flex;
             margin-bottom: 30px;
             padding-bottom: 20px;
-            border-bottom: 1px dashed #eee;
-            align-items: flex-start; /* Align image and text at the top */
+            border-bottom: 1px dashed var(--border-color);
+            align-items: flex-start;
         }
 
         .news-item:last-child {
-            border-bottom: none; /* No border for the last item */
+            border-bottom: none;
             margin-bottom: 0;
             padding-bottom: 0;
         }
 
         .news-item img {
-            width: 180px; /* Fixed width for consistent image size */
-            height: 120px; /* Fixed height */
-            object-fit: cover; /* Crop to fit */
+            width: 180px;
+            height: 120px;
+            object-fit: cover;
             border-radius: 8px;
             margin-right: 20px;
-            flex-shrink: 0; /* Prevent image from shrinking */
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px var(--shadow-light);
         }
 
         .news-item h2, .news-item h3 {
-            font-size: 1.5em; /* Main news title */
-            color: #222;
+            font-size: 1.5em;
+            color: var(--text-primary);
             margin-bottom: 8px;
             line-height: 1.3;
         }
         
         aside .news-item h3 {
-             font-size: 1.2em; /* Smaller title for sidebar news */
-             margin-bottom: 5px;
+            font-size: 1.2em;
+            margin-bottom: 5px;
         }
 
         .news-item p {
             font-size: 0.95em;
-            color: #555;
+            color: var(--text-secondary);
             margin-bottom: 10px;
         }
 
-        .news-item p.date-author { /* Added a class for consistent date/author styling */
+        .news-item p.date-author {
             font-size: 0.8em;
-            color: #777;
+            color: var(--text-tertiary);
             margin-top: 5px;
         }
 
         .read-more {
             display: inline-block;
-            background-color: #6cfa3a; /* Greenish-yellow button */
+            background-color: var(--accent-green);
             color: #fff;
             padding: 8px 15px;
             border-radius: 5px;
@@ -420,31 +521,32 @@ $pdo = null;
         }
 
         .read-more:hover {
-            background-color: #0056b3; /* Blue on hover */
+            background-color: var(--accent-blue);
         }
         
         /* Specific styling for sidebar news items */
         aside .news-item {
-            flex-direction: column; /* Stack image and text vertically in sidebar */
+            flex-direction: column;
             align-items: flex-start;
             margin-bottom: 25px;
             padding-bottom: 15px;
         }
+        
         aside .news-item img {
-            width: 100%; /* Image takes full width in sidebar */
+            width: 100%;
             height: 150px;
             margin-right: 0;
-            margin-bottom: 10px; /* Space below image */
+            margin-bottom: 10px;
         }
 
         /* --- Footer Styles --- */
         .site-footer {
-            background-color: #004d00; /* Dark green background */
+            background-color: #1a1a1a;
             color: white;
-            padding: 40px 20px 0; /* Padding top, sides, no bottom padding for now */
+            padding: 40px 20px 0;
             font-family: 'Inter', Arial, sans-serif;
-            margin-top: auto; /* Pushes the footer to the bottom */
-            flex-shrink: 0; /* Prevent footer from shrinking */
+            margin-top: auto;
+            flex-shrink: 0;
         }
 
         .footer-content {
@@ -454,29 +556,29 @@ $pdo = null;
             max-width: 1200px;
             margin: 0 auto;
             gap: 30px;
-            padding-bottom: 30px; /* Padding above the bottom bar */
+            padding-bottom: 30px;
         }
 
         .footer-section {
             flex: 1;
             min-width: 250px;
-            margin-bottom: 20px; /* Space between sections on wrap */
+            margin-bottom: 20px;
         }
 
         .footer-section h3 {
-            color: #6cfa3a; /* Green for headings */
+            color: var(--accent-green);
             margin-bottom: 15px;
             font-size: 1.3em;
-            border-bottom: 2px solid #6cfa3a; /* Underline for headings */
+            border-bottom: 2px solid var(--accent-green);
             padding-bottom: 5px;
-            display: inline-block; /* Make border-bottom fit content */
+            display: inline-block;
         }
-         .footer-section h4 { /* For "Our Journalists" sub-heading */
-            color: #6cfa3a; /* Green for headings */
+        
+        .footer-section h4 {
+            color: var(--accent-green);
             margin-bottom: 10px;
             font-size: 1.1em;
         }
-
 
         .footer-section p {
             font-size: 0.95em;
@@ -499,7 +601,7 @@ $pdo = null;
         }
 
         .footer-section ul li a:hover {
-            color: #6cfa3a; /* Hover color for links */
+            color: var(--accent-green);
         }
 
         .social-icons a {
@@ -510,13 +612,13 @@ $pdo = null;
         }
 
         .social-icons a:hover {
-            color: #6cfa3a; /* Hover color for social icons */
+            color: var(--accent-green);
         }
 
         /* Journalist Team Section in Footer */
         .footer-section .team-section {
             display: flex;
-            flex-direction: column; /* Stack members vertically in footer */
+            flex-direction: column;
             gap: 15px;
             margin-top: 10px;
         }
@@ -525,34 +627,33 @@ $pdo = null;
             display: flex;
             align-items: center;
             gap: 15px;
-            background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent background for members */
+            background-color: rgba(255, 255, 255, 0.1);
             padding: 10px;
             border-radius: 8px;
             transition: background-color 0.3s ease;
-            width: 100%; /* Take full width of its container */
-            max-width: none; /* Override previous max-width */
-            text-align: left; /* Align text left within member box */
+            width: 100%;
+            max-width: none;
+            text-align: left;
         }
 
         .footer-section .member:hover {
             background-color: rgba(255, 255, 255, 0.2);
-            transform: none; /* No lift effect in footer */
         }
 
         .footer-section .member img {
-            width: 60px; /* Smaller circular image in footer */
+            width: 60px;
             height: 60px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid #6cfa3a;
-            flex-shrink: 0; /* Prevent image from shrinking */
-            margin-bottom: 0; /* Reset margin */
+            border: 2px solid var(--accent-green);
+            flex-shrink: 0;
+            margin-bottom: 0;
         }
 
         .footer-section .member h4 {
             font-size: 1em;
             margin-bottom: 5px;
-            color: #6cfa3a;
+            color: var(--accent-green);
         }
 
         .footer-section .member p {
@@ -563,19 +664,20 @@ $pdo = null;
 
         /* Alliance Section in Footer */
         .footer-section .alliance h4 {
-            color: #6cfa3a;
+            color: var(--accent-green);
             margin-bottom: 10px;
             font-size: 1.1em;
         }
+        
         .footer-section .alliance img {
-            max-width: 100px; /* Smaller alliance logo in footer */
+            max-width: 100px;
             height: auto;
             margin-top: 0;
         }
 
         /* Footer Bottom Bar */
         .footer-bottom {
-            background-color: #003300; /* Even darker green for bottom bar */
+            background-color: #0d0d0d;
             padding: 15px 20px;
             font-size: 0.85em;
             text-align: center;
@@ -595,14 +697,13 @@ $pdo = null;
             margin: 0;
         }
 
-
         /* --- Responsive Design for Content --- */
         @media (max-width: 992px) {
             .content-container {
-                grid-template-columns: 1fr; /* Stack columns on smaller screens */
+                grid-template-columns: 1fr;
             }
             aside {
-                margin-top: 30px; /* Add space when stacked */
+                margin-top: 30px;
             }
         }
 
@@ -621,7 +722,7 @@ $pdo = null;
                 padding: 20px;
             }
             .news-item {
-                flex-direction: column; /* Stack image and text in main content */
+                flex-direction: column;
                 align-items: center;
                 text-align: center;
             }
@@ -636,38 +737,38 @@ $pdo = null;
                 width: 100%;
                 text-align: center;
             }
-             .footer-content {
+            .footer-content {
                 flex-direction: column;
                 align-items: center;
                 text-align: center;
             }
 
             .footer-section {
-                min-width: unset; /* Remove min-width on small screens */
-                width: 90%; /* Take more width on small screens */
+                min-width: unset;
+                width: 90%;
             }
 
             .footer-section h3 {
-                margin-top: 20px; /* Add space between stacked headings */
+                margin-top: 20px;
             }
 
             .social-icons {
                 margin-bottom: 20px;
             }
             .footer-section ul {
-                text-align: center; /* Center quick links */
+                text-align: center;
             }
             .footer-section ul li a {
-                display: inline-block; /* Allow wrapping for inline display */
-                margin: 0 8px; /* Space between inline links */
+                display: inline-block;
+                margin: 0 8px;
             }
 
             .footer-section .member {
-                flex-direction: column; /* Stack image and text in member on small screens */
+                flex-direction: column;
                 text-align: center;
             }
             .footer-section .member img {
-                margin-bottom: 10px; /* Space below image */
+                margin-bottom: 10px;
             }
             .footer-bottom .wrapper {
                 flex-direction: column;
@@ -688,25 +789,24 @@ $pdo = null;
             <span></span>
             <span></span>
         </div>
-        <ul class="nav-links" id="navLinks">
-            <li><a href="../index.php">All</a></li>
-            <li><a href="./local.php" class="active">Local News</a></li>
-            <li><a href="../pages/sport.php">Sports</a></li>
-            <li><a href="../pages/entertain.php">Entertainment</a></li>
-            <li><a href="../pages/announcement.php">Announcements</a></li>
-        </ul>
+        <div class="nav-right" id="navRight">
+            <ul class="nav-links">
+                <li><a href="../index.php">All</a></li>
+                <li><a href="./local.php" class="active">Local News</a></li>
+                <li><a href="../pages/sport.php">Sports</a></li>
+                <li><a href="../pages/entertain.php">Entertainment</a></li>
+                <li><a href="../pages/announcement.php">Announcements</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode"></button>
+        </div>
     </div>
+    
     <div class="wrapper">
         <div class="slider" id="update-slider">
             <?php if (!empty($slider_news)): ?>
                 <?php foreach ($slider_news as $index => $slide): ?>
                     <div class="slide <?= $index === 0 ? 'active' : '' ?>">
-                        <?php 
-                        $image_path = (!empty($slide['media_url']) && $slide['media_url'] !== 'uploads/default.jpg') 
-                                        ? '../' . htmlspecialchars($slide['media_url']) // Prepend ../ if stored as uploads/filename.jpg
-                                        : '../images/placeholder.jpg'; // Path to placeholder
-                        ?>
-                        <img src="<?= $image_path ?>" alt="<?= htmlspecialchars($slide['news_title']) ?>" />
+                        <img src="<?= getImagePath($slide['media_url']) ?>" alt="<?= htmlspecialchars($slide['news_title']) ?>" />
                         <div class="slide-caption"><?= htmlspecialchars($slide['news_title']) ?></div>
                     </div>
                 <?php endforeach; ?>
@@ -724,12 +824,7 @@ $pdo = null;
                 <?php if (!empty($top_stories)): ?>
                     <?php foreach ($top_stories as $news): ?>
                         <article class="news-item">
-                            <?php 
-                            $image_path = (!empty($news['media_url']) && $news['media_url'] !== 'uploads/default.jpg') 
-                                            ? '../' . htmlspecialchars($news['media_url']) // Prepend ../
-                                            : '../images/placeholder.jpg'; // Path to placeholder
-                            ?>
-                            <img src="<?= $image_path ?>" alt="<?= htmlspecialchars($news['news_title']) ?>" />
+                            <img src="<?= getImagePath($news['media_url']) ?>" alt="<?= htmlspecialchars($news['news_title']) ?>" />
                             <div>
                                 <h2><?= htmlspecialchars($news['news_title']) ?></h2>
                                 <p><?= htmlspecialchars(substr($news['news_content'], 0, 150)) ?><?= strlen($news['news_content']) > 150 ? '...' : '' ?></p>
@@ -748,12 +843,7 @@ $pdo = null;
                 <?php if (!empty($other_news)): ?>
                     <?php foreach ($other_news as $news): ?>
                         <article class="news-item">
-                            <?php 
-                            $image_path = (!empty($news['media_url']) && $news['media_url'] !== 'uploads/default.jpg') 
-                                            ? '../' . htmlspecialchars($news['media_url']) // Prepend ../
-                                            : '../images/placeholder.jpg'; // Path to placeholder
-                            ?>
-                            <img src="<?= $image_path ?>" alt="<?= htmlspecialchars($news['news_title']) ?>" />
+                            <img src="<?= getImagePath($news['media_url']) ?>" alt="<?= htmlspecialchars($news['news_title']) ?>" />
                             <div>
                                 <h3><?= htmlspecialchars($news['news_title']) ?></h3>
                                 <p><?= htmlspecialchars(substr($news['news_content'], 0, 100)) ?><?= strlen($news['news_content']) > 100 ? '...' : '' ?></p>
@@ -799,13 +889,17 @@ $pdo = null;
                 <div class="team-section" id="team">
                     <div class="member">
                         <img src="../images/eric.jpg" alt="Eric Bombo Chocola">
-                        <h4>ERIC BOMBO CHOCOLA</h4>
-                        <p>HOPE HAVEN RWANDA, YES! TOGETHER WE MAKE A BETTER WORLD</p>
+                        <div>
+                            <h4>ERIC BOMBO CHOCOLA</h4>
+                            <p>HOPE HAVEN RWANDA, YES! TOGETHER WE MAKE A BETTER WORLD</p>
+                        </div>
                     </div>
                     <div class="member">
                         <img src="../images/journal.jpg" alt="Nicole">
-                        <h4>Nicole</h4>
-                        <p>World of information, World of life</p>
+                        <div>
+                            <h4>Nicole</h4>
+                            <p>World of information, World of life</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -828,7 +922,24 @@ $pdo = null;
     </footer>
 
     <script>
-        const slides = document.querySelectorAll('.slider .slide'); // Corrected selector
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+
+        // Check for saved theme preference or default to 'light'
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        htmlElement.setAttribute('data-theme', currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            htmlElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Slider Functionality
+        const slides = document.querySelectorAll('.slider .slide');
         let currentSlide = 0;
         const slideInterval = 5000; // 5 seconds
 
@@ -844,23 +955,24 @@ $pdo = null;
         }
 
         if (slides.length > 0) {
-            showSlide(currentSlide); // Show initial slide
+            showSlide(currentSlide);
             setInterval(nextSlide, slideInterval);
         }
 
         // Navigation Toggle (Hamburger menu)
         const navToggle = document.getElementById('navToggle');
-        const navLinks = document.getElementById('navLinks');
+        const navRight = document.getElementById('navRight');
 
-        if (navToggle && navLinks) {
+        if (navToggle && navRight) {
             navToggle.addEventListener('click', () => {
-                navLinks.classList.toggle('active');
+                navRight.classList.toggle('active');
             });
 
             // Close nav menu when a link is clicked (for mobile)
-            navLinks.querySelectorAll('a').forEach(link => {
+            const navLinks = navRight.querySelectorAll('a');
+            navLinks.forEach(link => {
                 link.addEventListener('click', () => {
-                    navLinks.classList.remove('active');
+                    navRight.classList.remove('active');
                 });
             });
         }

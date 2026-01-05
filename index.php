@@ -34,31 +34,191 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE APPEAL - NEWS THAT MATTERS</title>
-    <link rel="stylesheet" href="index.css?v=6.0">
+    <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="shortcut icon" href="../images/10.png" type="image/x-icon">
-<style> .countdown-title {
-            font-size: 2em;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color:#008a12;
-            margin-top:1em;
-        }
-
-        #countdown {
-            font-size: 2em;
-            font-weight: bold;
-            padding: 5px;
-            border-radius: 10px;
-            background-color: rgba(255, 255, 255, 0.2);
-            display: inline-block;
-            color:#555;
-            
-        } 
+<style>
+ 
+        
         .img{
             width:30px;
             height:30px;
         }
+
+        /* Theme Toggle Styles */
+        .theme-toggle {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+            margin-left: 20px;
+        }
+
+        .theme-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .theme-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 30px;
+        }
+
+        .theme-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .theme-slider {
+            background-color: #008a12;
+        }
+
+        input:checked + .theme-slider:before {
+            transform: translateX(30px);
+        }
+
+        .theme-icon {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            transition: opacity 0.3s;
+        }
+
+        .theme-icon.sun {
+            left: 8px;
+            color: #ffd700;
+        }
+
+        .theme-icon.moon {
+            right: 8px;
+            color: #f0f0f0;
+        }
+
+        /* Dark Theme Styles */
+        body.dark-theme {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+
+        body.dark-theme .wrapper {
+            background-color: #2a2a2a;
+        }
+
+        body.dark-theme .top-nav {
+            background-color: #1f1f1f;
+            border-bottom-color: #333;
+        }
+
+        body.dark-theme .nav-links a {
+            color: #e0e0e0;
+        }
+
+        body.dark-theme .nav-links a:hover {
+            color: #008a12;
+        }
+
+        body.dark-theme .extra-content {
+            background-color: #2a2a2a;
+            color: #e0e0e0;
+        }
+
+        body.dark-theme .extra-content span {
+            color: #00b318;
+        }
+
+        body.dark-theme .weather-container {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border: 1px solid #008a12;
+            box-shadow: 0 8px 32px rgba(0, 138, 18, 0.2);
+        }
+
+        body.dark-theme .current-time {
+            color: #00ff1a;
+            text-shadow: 0 0 10px rgba(0, 255, 26, 0.5);
+        }
+
+        body.dark-theme .report-button {
+            background: linear-gradient(135deg, #008a12 0%, #00b318 100%);
+            color: #fff;
+            border: 1px solid #00ff1a;
+            box-shadow: 0 4px 15px rgba(0, 138, 18, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-theme .report-button:hover {
+            background: linear-gradient(135deg, #00b318 0%, #00d420 100%);
+            box-shadow: 0 6px 20px rgba(0, 255, 26, 0.4);
+            transform: translateY(-2px);
+        }
+
+        body.dark-theme .temperature {
+            color: #00ff1a;
+            text-shadow: 0 0 20px rgba(0, 255, 26, 0.6);
+        }
+
+        body.dark-theme .condition {
+            color: #b0b0b0;
+        }
+
+        body.dark-theme .detail-item {
+            background: rgba(0, 138, 18, 0.1);
+            border: 1px solid rgba(0, 138, 18, 0.3);
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        body.dark-theme .detail-label {
+            color: #00b318;
+            font-weight: 600;
+        }
+
+        body.dark-theme .detail-item span:not(.detail-label) {
+            color: #e0e0e0;
+        }
+
+        body.dark-theme .site-footer {
+            background-color: #1f1f1f;
+            color: #e0e0e0;
+        }
+
+        body.dark-theme .footer-section h3 {
+            color: #00b318;
+        }
+
+        body.dark-theme .footer-section a {
+            color: #b0b0b0;
+        }
+
+        body.dark-theme .footer-section a:hover {
+            color: #00b318;
+        }
+
+        body.dark-theme .footer-bottom {
+            background-color: #151515;
+            border-top-color: #333;
+        }
+        body.dark-theme .the-body{
+            background-color: #1a1a1a;
+        }
+
+
+
 </style>   
 </head>
 <body>
@@ -67,14 +227,27 @@ try {
 
     <div class="wrapper">
         <div class="top-nav">
-                        <div class="logo-container"> <div class="logo-box">
+            <div class="logo-container">
+                <div class="logo-box">
                     <img src="./images/claudia (1).gif" alt="Alliance Logo">
                 </div>
                 <div class="site-title">APPEAL</div>
-            </div> <button class="menu-toggle" aria-label="Toggle navigation bar">
+            </div>
+            
+            <!-- Theme Toggle Button -->
+            <label class="theme-toggle">
+                <input type="checkbox" id="theme-toggle-checkbox">
+                <span class="theme-slider">
+                    <i class="bi bi-sun-fill theme-icon sun"></i>
+                    <i class="bi bi-moon-fill theme-icon moon"></i>
+                </span>
+            </label>
+            
+            <button class="menu-toggle" aria-label="Toggle navigation bar">
                 &#9776;
             </button>
-                        <div class="nav-links">
+            
+            <div class="nav-links">
                 <a href="index.php">All</a>
                 <a href="./local/local.php">Local news</a>
                 <a href="./pages/sport.php">Sports</a>
@@ -83,12 +256,10 @@ try {
                 <a href="./Ally ai/index.php"><img src="./images/icon.png"class="img" alt="Ally ai "></a>
             </div>
         </div>
+        
         <section class="extra-content">
             <h2>Welcome to the controlling news hub. <span>THE ALLIANCE APPEAL</span></h2>
             <p>Stay updated with the latest global news in sports, entertainment, local news + Politics and also announcements from the staff and administration + student cabinet.</p>
-               <div class="countdown-title"> Mission: Going Home </div>
-        <div id="countdown">Loading...</div>
-
         </section>
 
         <div class="the-body">
@@ -102,7 +273,7 @@ try {
                     <div class="temperature">
                         <?php
                         
-                            $weather_icon_code = isset($weather_data['weather'][0]['icon']) ? $weather_data['weather'][0]['icon'] : '01d'; // Default icon
+                            $weather_icon_code = isset($weather_data['weather'][0]['icon']) ? $weather_data['weather'][0]['icon'] : '01d';
                             $weather_icon_url = "http://openweathermap.org/img/wn/{$weather_icon_code}@2x.png";
                             $weather_description = isset($weather_data['weather'][0]['description']) ? $weather_data['weather'][0]['description'] : 'N/A';
                         ?>
@@ -145,10 +316,11 @@ try {
               We bring you trusted and useful news to transform and advance your minds. "AMAKURU ATARIHO IVUMBI"
             </p>
             <div class="social-links">
-    <a href="http://10.12.0.9" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-    <a href="http://10.12.0.9/netgram" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a> <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-    <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
-</div>
+                <a href="http://10.12.0.9" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                <a href="http://10.12.0.9/netgram" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+                <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+            </div>
         </div>
 
         <div class="footer-section footer-links">
@@ -196,6 +368,27 @@ try {
 </footer>
 
     <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('theme-toggle-checkbox');
+        const body = document.body;
+
+        // Check for saved theme preference or default to light mode
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            body.classList.add('dark-theme');
+            themeToggle.checked = true;
+        }
+
+        themeToggle.addEventListener('change', function() {
+            if (this.checked) {
+                body.classList.add('dark-theme');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.remove('dark-theme');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
         // Dummy function for 'Report weather' button
         function reportWeather() {
             alert('This button is a placeholder. You could implement functionality here to allow users to report current weather conditions, perhaps by sending data to your server.');
@@ -210,53 +403,29 @@ try {
                 timeElement.textContent = now.toLocaleTimeString('en-US', options);
             }
         }
-        setInterval(updateCurrentTime, 1000); // Update every second
-        updateCurrentTime(); // Initial call to display time immediately on load
+        setInterval(updateCurrentTime, 1000);
+        updateCurrentTime();
     </script>
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
 
-    if (menuToggle && navLinks) {
-        menuToggle.addEventListener('click', function() {
-            navLinks.classList.toggle('active');
+            if (menuToggle && navLinks) {
+                menuToggle.addEventListener('click', function() {
+                    navLinks.classList.toggle('active');
+                });
+
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        if (navLinks.classList.contains('active')) {
+                            navLinks.classList.remove('active');
+                        }
+                    });
+                });
+            }
         });
-
-        // Optional: Close menu when a link is clicked (useful for single-page navigation)
-        navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', function() {
-                if (navLinks.classList.contains('active')) {
-                    navLinks.classList.remove('active');
-                }
-            });
-        });
-    }
-});
-
- const endDate = new Date("june 27 , 2025  07:00:00").getTime();
-
-  // Update countdown every second
-  const timer = setInterval(function() {
-    const now = new Date().getTime();
-    const distance = endDate - now;
-
-    // Time calculations
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    // Display the result
-    document.getElementById("countdown").innerHTML =
-      days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
-
-    // If the countdown is finished
-    if (distance < 0) {
-      clearInterval(timer);
-      document.getElementById("countdown").innerHTML = "Term Ended!";
-    }
-  }, 1000);
     </script>
 </body>
 </html>

@@ -40,40 +40,50 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login</title>
-    <link rel="stylesheet" href="admin_login.css?v=1.0">
-    <script>    
-    window.onload = function () {
-    const correctUsername = "Alliance";
-    const correctPassword = "Ally123";
-
-    const username = prompt("Enter username:");
-    const password = prompt("Enter password:");
-
-    if (username === correctUsername && password === correctPassword) {
-      document.getElementById("login-section").style.display = "block";
-      document.body.style.backgroundColor = "white";
-    } else {
-      document.body.innerHTML = "<h1 style='color: red; text-align: center;'>You don't have access.</h1>";
-    }
-  };
-</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin_login.css">
 </head>
 <body>
-    
-    <div class="login-form">
-    <fieldset>
-    <h2 style="text-align: center; margin-top: 0.2em;">Admin Login</h2>
-    <?php if (!empty($message)): ?>
+    <div class="container">
+        <div class="login-form">
+            <fieldset>
+                <h2>Admin Login</h2>
+                <p class="subtitle">Welcome back! Please login to your account</p>
+                <?php if (!empty($message)): ?>
             <div class="<?= htmlspecialchars($message_type); ?>">
                 <?= htmlspecialchars($message); ?>
             </div>
         <?php endif; ?>
-    <form action="" method="POST">
-        <input type="email" name="email" placeholder="Enter your email..." required><br>
-        <input type="password" name="password" placeholder="Enter your password..." required><br>
-        <button type="submit">Login</button>
-    </form>
-</fieldset>
-</div>
+                
+                <form action="" method="POST">
+                    <div class="input-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email..." required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" placeholder="Enter your password..." required>
+                    </div>
+                    
+                    <button type="submit">Login</button>
+                    
+                    <div class="forgot-password">
+                        <a href="#">Forgot password?</a>
+                    </div>
+                </form>
+            </fieldset>
+        </div>
+        
+        <div class="greetings">
+            <spline-viewer url="https://prod.spline.design/qI-4U129558MHQ-X/scene.splinecode"></spline-viewer>
+            <div class="hide"></div>
+        </div>
+        
+    </div>
+    
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.28/build/spline-viewer.js"></script>
 </body>
 </html>
